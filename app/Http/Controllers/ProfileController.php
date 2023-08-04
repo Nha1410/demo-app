@@ -11,16 +11,47 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+    /**
+     * @SWG\Post(
+     *   path="api/users",
+     *   summary="Create A User",
+     *   operationId="store",
+     *   tags={"Users"},
+     *   security={
+     *       {"ApiKeyAuth": {}}
+     *   },
+     *   @SWG\Parameter(
+     *       name="name",
+     *       in="formData",
+     *       required=true,
+     *       type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *       name="email",
+     *       in="formData",
+     *       required=true,
+     *       type="string"
+     *   ),
+     *   @SWG\Parameter(
+     *       name="team_id",
+     *       in="formData",
+     *       required=true,
+     *       type="integer"
+     *   ),
+     *   @SWG\Response(response=200, description="successful operation"),
+     *   @SWG\Response(response=406, description="not acceptable"),
+     *   @SWG\Response(response=500, description="internal server error")
+     * )
+     *
+     */
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): Response
     {
-
-        $roles = Auth::user()->getRoleNames(); // Returns a collection
-
+        $user = Auth::user();
+        $roles = $user->getRoleNames(); // Returns a collection
+        $this->authorize('view');
+        
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),

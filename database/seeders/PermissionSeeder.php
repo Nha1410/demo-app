@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Role;
+use App\Models\Permission;
 
 class PermissionSeeder extends Seeder
 {
@@ -13,64 +15,38 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            [
-                'name' => 'admin',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('123456'),
-                'created_at' => now(),
-                'updated_at' => now(),
-                'email_verified_at' => now(),
-            ],
-            [
-                'name' => 'user',
-                'email' => 'user@gmail.com',
-                'password' => bcrypt('123456'),
-                'created_at' => now(),
-                'updated_at' => now(),
-                'email_verified_at' => now(),
-            ],
-        ]);
+        $guardName = config('auth.defaults.guard');
 
-        DB::table('permissions')->insert([
-            [
-                'name' => 'review_post',
-                'guard_name' => 'sanctum',
-            ],
-            [
-                'name' => 'update_post',
-                'guard_name' => 'sanctum',
-            ],
-            [
-                'name' => 'delete_post',
-                'guard_name' => 'sanctum'
-            ],
-            [
-                'name' => 'restore_post',
-                'guard_name' => 'sanctum'
-            ],
-            [
-                'name' => 'force_delete_post',
-                'guard_name' => 'sanctum'
-            ],
-        ]);
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        DB::table('roles')->insert([
-            ['name' => 'admin', 'guard_name' => 'sanctum'],
-        ]);
-
-        DB::table('role_user')->insert([
-            'role_id' => 1,
-            'model_type' => '',
-            'user_id' => 1,
-        ]);
-
-        DB::table('permission_role')->insert([
-            ['permission_id' => 1, 'role_id' => 1],
-            ['permission_id' => 2, 'role_id' => 1],
-            ['permission_id' => 3, 'role_id' => 1],
-            ['permission_id' => 4, 'role_id' => 1],
-            ['permission_id' => 5, 'role_id' => 1],
-        ]);
+        Permission::create(
+            [
+                'name' => 'view',
+                'guard_name' => $guardName
+            ],
+        );
+        Permission::create(
+            [
+                'name' => 'edit',
+                'guard_name' => $guardName
+            ],
+        );
+        Permission::create(
+            [
+                'name' => 'create',
+                'guard_name' => $guardName
+            ],
+        );
+        Permission::create(
+            [
+                'name' => 'delete',
+                'guard_name' => $guardName
+            ],
+        );
+        Role::create(['name' => 'super admin', 'guard_name' => $guardName]);
+        Role::create(['name' => 'admin', 'guard_name' => $guardName])->givePermissionTo(['view', 'edit', 'create', 'delete']);
+        Role::create(['name' => 'writer', 'guard_name' => $guardName])->givePermissionTo('create');
+        Role::create(['name' => 'user', 'guard_name' => $guardName])->givePermissionTo('view');
     }
 }

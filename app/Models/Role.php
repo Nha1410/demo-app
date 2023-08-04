@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as Model;
+use Spatie\Permission\Contracts\Role as RoleContract;
 
 class Role extends Model
 {
@@ -19,8 +20,8 @@ class Role extends Model
         'updated_at',
     ];
 
-    public function permissions()
-    {
-        return $this->belongsToMany('App\Models\Permission');
-    }
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany('App\Models\Permission');
+    // }
 }
