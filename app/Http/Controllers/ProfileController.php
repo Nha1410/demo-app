@@ -11,41 +11,18 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
-    /**
-     * @SWG\Post(
-     *   path="api/users",
-     *   summary="Create A User",
-     *   operationId="store",
-     *   tags={"Users"},
-     *   security={
-     *       {"ApiKeyAuth": {}}
-     *   },
-     *   @SWG\Parameter(
-     *       name="name",
-     *       in="formData",
-     *       required=true,
-     *       type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *       name="email",
-     *       in="formData",
-     *       required=true,
-     *       type="string"
-     *   ),
-     *   @SWG\Parameter(
-     *       name="team_id",
-     *       in="formData",
-     *       required=true,
-     *       type="integer"
-     *   ),
-     *   @SWG\Response(response=200, description="successful operation"),
-     *   @SWG\Response(response=406, description="not acceptable"),
-     *   @SWG\Response(response=500, description="internal server error")
-     * )
-     *
-     */
+
 class ProfileController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/profile",
+     *     operationId="edit",
+     *     tags={"Users"},
+     *     summary="edit users",
+     *     @OA\Response(response="200", description="List of users")
+     * )
+     */
     public function edit(Request $request): Response
     {
         $user = Auth::user();

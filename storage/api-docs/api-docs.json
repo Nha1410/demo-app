@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "paths": {
+        "/profile": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "edit users contain profile information, update password or delete an account",
+                "operationId": "edit",
+                "responses": {
+                    "200": {
+                        "description": "Users information"
+                    }
+                },
+                "requestBody": {
+                    "description": "Update an existent user in the store",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                        
+                        }
+                      },
+                      "application/xml": {
+                        "schema": {
+                        
+                        }
+                      },
+                      "application/x-www-form-urlencoded": {
+                        "schema": {
+                        
+                        }
+                      }
+                    },
+                    "required": true
+                  }
+            }
+        }
+    }
+}
