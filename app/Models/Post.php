@@ -13,8 +13,22 @@ class Post extends Model
     const STATUS_UNPUBLISHED = 'unpublished';
     const STATUS_PUBLISHED = 'published';
 
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'id', 'user_id', 'title', 'content', 
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function image() {
+        return $this->hasMany('App\Models\Image');
     }
 }

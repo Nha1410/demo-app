@@ -13,7 +13,7 @@ import Dialog from '../Components/Dialog.vue'
             <!-- <v-color-picker></v-color-picker> -->
             <Dialog></Dialog>
             <div
-                class="w-full relative flex ct-docs-disable-sidebar-content overflow-x-hidden"
+                class="w-full relative flex ct-docs-disable-sidebar-content"
             >
                 <nav
                     class="block py-4 px-6 top-0 bottom-0 w-64 bg-white shadow-xl left-0 absolute flex-row flex-nowrap md:z-10 z-9999 transition-all duration-300 ease-in-out transform md:translate-x-0 -translate-x-full"

@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@mdi/font": "^7.2.96",
+        "resize-textarea-vue3": "^1.1.3",
         "vuetify": "^3.3.12"
     }
 }
