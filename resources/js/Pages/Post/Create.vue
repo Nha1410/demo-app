@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import 'vuetify/dist/vuetify.min.css'
 </script>
 <template>
     <Head title="Dashboard" />
@@ -15,10 +16,11 @@ import { Head } from "@inertiajs/vue3";
                         >Your Title
                     </label>
                     <input
+                        v-model="formPost.title"
                         type="text"
                         id="Title"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="name@flowbite.com"
+                        placeholder="Title"
                         required
                     />
                 </div>
@@ -29,7 +31,7 @@ import { Head } from "@inertiajs/vue3";
                         >Your content
                     </label>
                     <resize-textarea
-                        v-model="content"
+                        v-model="formPost.content"
                         type="text"
                         id="content"
                         class="resize-none overflow-hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -47,20 +49,35 @@ import { Head } from "@inertiajs/vue3";
                         >
                             <div
                                 class="flex flex-col items-center justify-center pt-7"
+
                             >
-                                <img
+                                <div class="relative">
+                                    <img
+                                    v-if="!imagePreview"
                                     class="h-auto max-w-lg rounded-lg"
-                                    src="https://flowbite.com/docs/images/examples/image-1@2x.jpg"
+                                    src="/images/image-1@2x.jpg"
                                     alt="image description"
-                                    loading="lazy"
-                                />
+                                    
+                                    />
+                                    <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="h-auto max-w-lg rounded-lg">
+                                    <v-btn 
+                                        v-if="imagePreview"
+                                        color="primary" 
+                                        class="flex z-1 border w-[30px] h-[30px] rounded-full top-[-10px] right-[-10px]"
+                                        position="absolute"
+                                        rounded="xl"
+                                        @click = "removeImage($event)"
+                                    >
+                                        <i class="flex w-full fa-solid fa-x items-center justify-center"></i>
+                                    </v-btn>
+                                </div>
                                 <p
                                     class="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600"
                                 >
                                     Select a photo
                                 </p>
                             </div>
-                            <input type="file" class="opacity-0" />
+                            <input ref="inputImage" type="file" class="opacity-0" @change="previewImage($event)"/>
                         </label>
                     </div>
                 </div>
@@ -70,11 +87,13 @@ import { Head } from "@inertiajs/vue3";
                     >
                         Cannel
                     </button>
-                    <button
+                    <v-btn
+                        color="green"
                         class="px-4 py-2 text-white bg-green-500 rounded shadow-xl"
+                        @click="submitForm($event)"
                     >
                         Create
-                    </button>
+                    </v-btn>
                 </div>
             </div>
         </div>
@@ -84,9 +103,46 @@ import { Head } from "@inertiajs/vue3";
     export default {
         data() {
             return {
-                content: "",
+                formPost: {
+                    title: "",
+                    content: "",
+                    selectedImage: null,
+                },
+                imagePreview: null,
             };
         },
+        methods: {
+            selectImages(event) {
+                event.stopPropagation();
+                this.$refs.inputImage.click();
+                // document.getElementById("inputImage").click();
+            },
+            previewImage(event) {
+                this.formPost.selectedImage = event.target.files[0];
+                this.imagePreview = URL.createObjectURL(this.formPost.selectedImage);
+            },
+            removeImage(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                this.imagePreview = null;
+                this.formPost.selectedImage = null;
+                this.$refs.inputImage.value = "";
+            },
+            async submitForm(event) {
+                event.preventDefault();
+                let formData = new FormData();
+                formData.append('title', this.formPost.title);
+                formData.append('content', this.formPost.content);
+                formData.append('image', this.formPost.selectedImage);
+                // formData.append('user_id', 1);
+                try {
+                    const response = await axios.post('/post/create', formData);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
     };
 </script>
 <style scoped>

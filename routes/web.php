@@ -46,7 +46,7 @@ Route::prefix('/post')
     ->middleware('auth')
     ->group(function () {
         Route::get('/create', [PostController::class, 'create'])->name('get-list-post'); 
-        Route::post('/', [PostController::class, 'create'])->name('get-list-post'); 
+        Route::post('/create', [PostController::class, 'store'])->name('store-post'); 
         Route::get('/list', [PostController::class, 'getList'])->name('get-list-post'); 
         Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post'); 
     });
