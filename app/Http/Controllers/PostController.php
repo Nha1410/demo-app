@@ -6,6 +6,7 @@ use App\Repositories\Contracts\PostRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
 use Inertia\Inertia;
 
 class PostController extends Controller
@@ -30,19 +31,29 @@ class PostController extends Controller
     /*
     ** show template for create new post
     */
-    public function store(Request $request): JsonResponse | JsonResource 
+    public function store(Request $request): JsonResponse | JsonResource
     {
-        $post = $this->postRepository->create($request->all());
+        $post = $this->postRepository->store($request->all());
 
-        return response()->json([
-
-        ]);
+        return  $post ? response()->json($post) : response()->json([
+            'message' => __('Created failure.'),
+        ], Response::HTTP_BAD_REQUEST);
     }
 
     /*
-    ** get list post and paginate 
+    ** get list post and paginate
     */
-    public function getList() {
-        
+    public function getList(): JsonResponse | JsonResource
+    {
+        $postList = $this->postRepository->getAll();
+
+        return  $postList ? response()->json($postList) : response()->json([
+            'message' => __('No data found.'),
+        ], Response::HTTP_NOT_FOUND);
+    }
+
+    public function index()
+    {
+        return Inertia::render('Post/Index', []);
     }
 }
