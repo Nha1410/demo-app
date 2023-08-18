@@ -43,9 +43,9 @@ class PostController extends Controller
     /*
     ** get list post and paginate
     */
-    public function getList(): JsonResponse | JsonResource
+    public function getList(Request $request): JsonResponse | JsonResource
     {
-        $postList = $this->postRepository->getAll();
+        $postList = $this->postRepository->getAll($request->all());
 
         return  $postList ? response()->json($postList) : response()->json([
             'message' => __('No data found.'),

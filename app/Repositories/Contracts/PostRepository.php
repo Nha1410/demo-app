@@ -8,4 +8,11 @@ use Illuminate\Support\Collection;
 interface PostRepository extends Repository
 {
     public function store(array $data): ?Post;
+
+    /**
+     * Get All with paginator
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function getAll();
 }
+
