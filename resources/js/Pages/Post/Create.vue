@@ -134,7 +134,6 @@ import 'vuetify/dist/vuetify.min.css'
                 formData.append('title', this.formPost.title);
                 formData.append('content', this.formPost.content);
                 formData.append('image', this.formPost.selectedImage);
-                // formData.append('user_id', 1);
                 try {
                     const response = await axios.post('/post/create', formData);
                     console.log(response.data);

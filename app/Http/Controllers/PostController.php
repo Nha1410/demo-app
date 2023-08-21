@@ -33,6 +33,10 @@ class PostController extends Controller
     */
     public function store(Request $request): JsonResponse | JsonResource
     {
+        if ($request->hasFile('image')) {
+            $post = $this->postRepository->store($request->all());
+        }
+        
         $post = $this->postRepository->store($request->all());
 
         return  $post ? response()->json($post) : response()->json([

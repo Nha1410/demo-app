@@ -6,7 +6,6 @@ use App\Http\Controllers\VuetifyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +16,15 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function () {
+    return 'test';
+});
+
+Route::get('/auth/facebook', function () {
+    return Socialite::driver('facebook')->redirect();
+});
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -51,3 +59,8 @@ Route::prefix('/post')
         Route::post('/create', [PostController::class, 'store'])->name('store-post'); 
         Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post'); 
     });
+
+
+Route::get('/auth/facebook/callback', function() {
+    return "Callback login with facebook";
+});
