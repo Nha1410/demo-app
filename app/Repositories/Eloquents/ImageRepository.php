@@ -6,6 +6,7 @@ use App\Models\Image;
 use App\Repositories\Contracts\ImageRepository as ContractsImageRepository;
 use App\Repositories\Repository;
 use App\Services\HandleImageService;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 class ImageRepository extends Repository implements ContractsImageRepository
@@ -28,7 +29,7 @@ class ImageRepository extends Repository implements ContractsImageRepository
         return Image::class;
     }
 
-    public function store($data , $postId = null): ?Image
+    public function store(UploadedFile $data , $postId = null): ?Image
     {
         $path = $this->handleImageService->storeLocalStorage($data, self::IMAGE_TYPE , $postId);
 
@@ -46,7 +47,7 @@ class ImageRepository extends Repository implements ContractsImageRepository
 
         } catch (\Exception $e) {
             DB::rollBack();
-            \Log::error('Error while saving post: ' . $e->getMessage());
+            \Log::error('Error while saving image: ' . $e->getMessage());
             return null;
         }
     }

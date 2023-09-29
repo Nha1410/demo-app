@@ -82,7 +82,7 @@ onMounted(() => {});
                                 v-for="image in post.images" :key="image.id"
                             >
                                 <img
-                                    src="/images/image-1@2x.jpg"
+                                    :src="image.image_path"
                                     alt="Image"
                                     class="m-4 rounded max-w-full w-[96%]"
                                 />

@@ -53,13 +53,11 @@ class PostRepository extends Repository implements ContractsPostRepository
         $page = Arr::get($filters, 'page', 1);
         $perPage = Arr::get($filters, 'per_page', 10);
 
-        // $post = Post::with('images')->find(103);
-        // $images = $post->images; 
-        // foreach ($images as $image) {
-        //     $imageUrl = $image->image_path; 
-        //     dd($image->image_path);
-        // }
-
-        return $this->model()->with('images')->orderByDesc('created_at')->take($perPage)->get();
+        // return $this->model()->with('images')->orderByDesc('created_at')->take($perPage)->get();
+        return $this->model()
+            ->with('images')
+            ->orderByDesc('created_at')
+            ->paginate($perPage, $columns, 'page', $page)
+            ->items();
     }
 }

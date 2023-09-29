@@ -22,6 +22,10 @@ class Image extends Model
         'path',
     ];
 
+    protected $appends = [
+        'image_path',
+    ];
+
     public function post() {
         return $this->belongsToMany('App\Models\Image', 'image_link_id', 'id');
     }
