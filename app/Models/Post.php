@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\PostImageScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +13,6 @@ class Post extends Model
     const STATUS_DRAFT = 'draft';
     const STATUS_UNPUBLISHED = 'unpublished';
     const STATUS_PUBLISHED = 'published';
-
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +28,12 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function image() {
-        return $this->hasMany('App\Models\Image');
+    public function images() {
+        return $this->hasMany('App\Models\Image', 'image_link_id', 'id');
     }
+
+    // protected static function booted()
+    // {
+    //     static::addGlobalScope(new PostImageScope);
+    // }
 }

@@ -6,19 +6,6 @@ namespace App\Repositories;
 abstract class Repository
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    protected $_model;
-
-    /**
-     * EloquentRepository constructor.
-     */
-    public function __construct()
-    {
-        $this->setModel();
-    }
-
-    /**
      * get model
      * @return string
      */
@@ -27,9 +14,9 @@ abstract class Repository
     /**
      * Set model
      */
-    public function setModel()
+    public function model()
     {
-        $this->_model = app()->make(
+        return app()->make(
             $this->getModel()
         );
     }
@@ -41,65 +28,13 @@ abstract class Repository
     public function getAll()
     {
 
-        return $this->_model->all();
+        return $this->model()->all();
     }
 
-    /**
-     * Get one
-     * @param $id
-     * @return mixed
-     */
-    public function find($id)
+
+    public function __call($name, $arguments)
     {
-        $result = $this->_model->find($id);
-
-        return $result;
-    }
-
-    /**
-     * Create
-     * @param array $attributes
-     * @return mixed
-     */
-    public function create(array $attributes)
-    {
-
-        return $this->_model->create($attributes);
-    }
-
-    /**
-     * Update
-     * @param $id
-     * @param array $attributes
-     * @return bool|mixed
-     */
-    public function update($id, array $attributes)
-    {
-        $result = $this->find($id);
-        if ($result) {
-            $result->update($attributes);
-            return $result;
-        }
-
-        return false;
-    }
-
-    /**
-     * Delete
-     *
-     * @param $id
-     * @return bool
-     */
-    public function delete($id)
-    {
-        $result = $this->find($id);
-        if ($result) {
-            $result->delete();
-
-            return true;
-        }
-
-        return false;
+        return $this->model()->{$name}(...$arguments);
     }
 
 }

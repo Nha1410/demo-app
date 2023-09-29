@@ -7,9 +7,9 @@ import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
 const listPost = ref([]);
-const test= {
+const test = {
     complete: "test",
-}
+};
 let page = 1;
 const load = async ($state) => {
     console.log("loading");
@@ -18,8 +18,10 @@ const load = async ($state) => {
         .get("/post/get-list?page=" + page)
         .then((res) => {
             // console.log(res);
-            if (res.data.length < 10) $state.complete();
-            else {
+            if (res.data.length < 10) {
+                $state.complete();
+                console.log("complete");
+            } else {
                 listPost.value.push(...res.data);
             }
             page++;
@@ -77,6 +79,7 @@ onMounted(() => {});
                             </p>
                             <div
                                 class="w-full flex items-center justify-center"
+                                v-for="image in post.images" :key="image.id"
                             >
                                 <img
                                     src="/images/image-1@2x.jpg"
@@ -110,7 +113,7 @@ onMounted(() => {});
                         <InfiniteLoading
                             @infinite="load"
                             class="flex justify-center"
-                            :slots= test
+                            :slots="test"
                         />
                     </div>
                     <!-- Repeat for other posts -->

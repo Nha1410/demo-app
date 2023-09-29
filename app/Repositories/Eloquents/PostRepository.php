@@ -29,7 +29,7 @@ class PostRepository extends Repository implements ContractsPostRepository
 
         try {
             $data['user_id'] = Auth::user()->id;
-            $post = $this->_model->fill($data);
+            $post = $this->model()->fill($data);
             $post->save();
             DB::commit();
 
@@ -53,7 +53,13 @@ class PostRepository extends Repository implements ContractsPostRepository
         $page = Arr::get($filters, 'page', 1);
         $perPage = Arr::get($filters, 'per_page', 10);
 
-        // dd($this->_model->paginate(15)->items());
-        return $this->_model->query()->paginate($perPage, $columns, 'page', $page)->items();
+        // $post = Post::with('images')->find(103);
+        // $images = $post->images; 
+        // foreach ($images as $image) {
+        //     $imageUrl = $image->image_path; 
+        //     dd($image->image_path);
+        // }
+
+        return $this->model()->with('images')->orderByDesc('created_at')->take($perPage)->get();
     }
 }
