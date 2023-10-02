@@ -1,44 +1,19 @@
 <script setup>
+import 'vuetify/dist/vuetify.min.css'
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
-import 'vuetify/dist/vuetify.min.css'
+
 </script>
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
+    <!-- <div class="w-50 h-50 overflow-hidden rounded-full border-4 border-white">
+        <img src="/images/image-1@2.jpg" alt="User Avatar" class="w-full h-full object-cover rounded-full">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60 rounded-full"></div> -->
         <div class="flex-col flex items-center justify-center mt-8">
             <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
-                <div class="m-6">
-                    <label
-                        for="Title"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Your Title
-                    </label>
-                    <input
-                        v-model="formPost.title"
-                        type="text"
-                        id="Title"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Title"
-                        required
-                    />
-                </div>
-                <div class="m-6">
-                    <label
-                        for="content"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Your content
-                    </label>
-                    <resize-textarea
-                        v-model="formPost.content"
-                        type="text"
-                        id="content"
-                        class="resize-none overflow-hidden bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        required
-                    >
-                    </resize-textarea>
-                </div>
                 <div class="m-4">
                     <label class="inline-block mb-2 text-gray-500"
                         >Upload Image(jpg,png,svg,jpeg)
@@ -54,12 +29,12 @@ import 'vuetify/dist/vuetify.min.css'
                                 <div class="relative">
                                     <img
                                     v-if="!imagePreview"
-                                    class="h-auto max-w-lg rounded-lg"
-                                    src="/images/image-1@2.jpg"
+                                    class="h-auto max-w-[20rem] rounded-full"
+                                    src="/images/image-preview.jpg"
                                     alt="image description"
                                     
                                     />
-                                    <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="h-auto max-w-lg rounded-lg">
+                                    <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="h-auto max-w-[20rem] rounded-full">
                                     <v-btn 
                                         v-if="imagePreview"
                                         color="primary" 
@@ -92,7 +67,7 @@ import 'vuetify/dist/vuetify.min.css'
                         class="px-4 py-2 text-white bg-green-500 rounded shadow-xl"
                         @click="submitForm($event)"
                     >
-                        Create
+                        Update
                     </v-btn>
                 </div>
             </div>
@@ -104,8 +79,6 @@ import 'vuetify/dist/vuetify.min.css'
         data() {
             return {
                 formPost: {
-                    title: "",
-                    content: "",
                     selectedImage: null,
                 },
                 imagePreview: null,
@@ -131,11 +104,9 @@ import 'vuetify/dist/vuetify.min.css'
             async submitForm(event) {
                 event.preventDefault();
                 let formData = new FormData();
-                formData.append('title', this.formPost.title);
-                formData.append('content', this.formPost.content);
                 formData.append('image', this.formPost.selectedImage);
                 try {
-                    const response = await axios.post('/post/create', formData);
+                    const response = await axios.post('/user/edit-avatar', formData);
                     console.log(response.data);
                 } catch (error) {
                     console.error(error);
@@ -144,17 +115,3 @@ import 'vuetify/dist/vuetify.min.css'
         }
     };
 </script>
-<style scoped>
-        textarea {
-            resize: none;
-            overflow: hidden;
-            box-sizing: border-box;
-            width: 100%;
-            font-family: inherit;
-            font-size: inherit;
-            line-height: inherit;
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            border-radius: 0.25rem;
-        }
- </style>

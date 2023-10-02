@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
@@ -23,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_image_path'
     ];
 
     /**
@@ -45,8 +48,22 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function post() 
+    protected $appends = [
+        'profile_image',
+    ];
+
+    public function posts(): HasMany
     {
         return $this->hasMany('App\Models\Post');
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany('App\Models\Image', 'image_link_id', 'id');
+    }
+
+    public function getProfileImageAttribute()
+    {
+        return Storage::url($this->profile_image_path);
     }
 }

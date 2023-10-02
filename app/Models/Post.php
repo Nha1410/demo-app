@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Models\Scopes\PostImageScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
@@ -20,20 +22,25 @@ class Post extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id', 'user_id', 'title', 'content', 
+        'id', 'user_id', 'title', 'content',
     ];
 
-    public function user()
+    /**
+     *   //when use global scope
+     *   protected static function booted()
+     *   {
+     *      static::addGlobalScope(new PostImageScope);
+     *   }
+     */
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function images() {
+    public function images(): HasMany
+    {
         return $this->hasMany('App\Models\Image', 'image_link_id', 'id');
     }
 
-    // protected static function booted()
-    // {
-    //     static::addGlobalScope(new PostImageScope);
-    // }
 }

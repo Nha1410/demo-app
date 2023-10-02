@@ -19,6 +19,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\ImageRepository::class,
             \App\Repositories\Eloquents\ImageRepository::class
         );
+        $this->app->singleton(
+            \App\Repositories\Contracts\UserRepository::class,
+            \App\Repositories\Eloquents\UserRepository::class
+        );
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VuetifyController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -53,13 +54,21 @@ Route::prefix('/post')
     ->name('post.')
     ->middleware('auth')
     ->group(function () {
-        Route::get('/', [PostController::class, 'index'])->name('index'); 
-        Route::get('/get-list', [PostController::class, 'getList'])->name('get-list-post'); 
-        Route::get('/create', [PostController::class, 'create'])->name('get-form-post'); 
-        Route::post('/create', [PostController::class, 'store'])->name('store-post'); 
-        Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post'); 
+        Route::get('/', [PostController::class, 'index'])->name('index');
+        Route::get('/get-list', [PostController::class, 'getList'])->name('get-list-post');
+        Route::get('/create', [PostController::class, 'create'])->name('get-form-post');
+        Route::post('/create', [PostController::class, 'store'])->name('store-post');
+        Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post');
     });
 
+Route::prefix('/user')
+    ->name('user.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/edit-avatar', [UserController::class, 'editAvatar'])->name('edit-avatar');
+        Route::post('/edit-avatar', [UserController::class, 'storeAvatar'])->name('store-avatar');
+        Route::get('/get-user-info', [UserController::class, 'getUserInfo'])->name('get-user-info');
+    });
 
 Route::get('/auth/facebook/callback', function() {
     return "Callback login with facebook";

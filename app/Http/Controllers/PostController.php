@@ -8,16 +8,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class PostController extends Controller
 {
+    protected const IMAGE_TYPE = 'post';
+
     /**
      * @var \App\Repositories\Contracts\PostRepository
      */
     protected $postRepository;
-
     protected $imageRepository;
+
 
     public function __construct(
         PostRepository $postRepository,
@@ -42,9 +45,9 @@ class PostController extends Controller
         $post = $this->postRepository->store($request->all());
 
         if ($request->hasFile('image')) {
-            $this->imageRepository->store($request->file('image'), $post['id']);
+            $this->imageRepository->store($request->file('image'), self::IMAGE_TYPE , $post['id']);
         }
-        $post['image'] = $post->image;
+
         return  $post ? response()->json($post) : response()->json([
             'message' => __('Created failure.'),
         ], Response::HTTP_BAD_REQUEST);
@@ -56,7 +59,6 @@ class PostController extends Controller
     public function getList(Request $request): JsonResponse | JsonResource
     {
         $postList = $this->postRepository->getAll($request->all());
-        // dd($this->postRepository->find(99));
 
         return  $postList ? response()->json($postList) : response()->json([
             'message' => __('No data found.'),

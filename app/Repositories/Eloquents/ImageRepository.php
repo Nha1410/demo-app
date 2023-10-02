@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class ImageRepository extends Repository implements ContractsImageRepository
 {
-    protected const IMAGE_TYPE = 'post';
     protected $handleImageService;
 
     public function __construct (
@@ -29,15 +28,15 @@ class ImageRepository extends Repository implements ContractsImageRepository
         return Image::class;
     }
 
-    public function store(UploadedFile $data , $postId = null): ?Image
+    public function store(UploadedFile $data, $image_type = '', $postId = null): ?Image
     {
-        $path = $this->handleImageService->storeLocalStorage($data, self::IMAGE_TYPE , $postId);
+        $path = $this->handleImageService->storeLocalStorage($data, $image_type , $postId);
 
         DB::beginTransaction();
 
         try {
             $image['path'] = $path;
-            $image['image_type'] = self::IMAGE_TYPE;
+            $image['image_type'] = $image_type;
             $image['image_link_id'] = $postId;
             $image_store = app()->make($this->getModel())->fill($image);
             $image_store->save();

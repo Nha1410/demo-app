@@ -1,21 +1,29 @@
-<?php 
+<?php
 namespace  App\Services;
 
 use App\Services\Service;
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 
-class HandleImageService extends Service 
+class HandleImageService extends Service
 {
     public function storeLocalStorage(UploadedFile $data, $type = '', $linked_id)
     {
-        $fileName = time() . '.' . $data->getClientOriginalExtension();
-        $path = 'images/'. $type . '/'.$linked_id .'/'.$fileName;
+        $filePath = now()->format('Ymd').'/'.str()->random(40);
+        $path = "images/{$type}/{$linked_id}/{$filePath}.".$data->getClientOriginalExtension();
 
-        return $data->store($path);
-    }    
+        $image = Image::make($data->getRealPath());
+        if($type == 'avatar') {
+            $image->resize(350, 300);
+        }
 
-    public function storeS3Storage() 
+        Storage::put($path, $image->encode());
+
+        return $path;
+    }
+
+    public function storeS3Storage()
     {
 
     }

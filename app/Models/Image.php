@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 
 class Image extends Model
@@ -26,13 +28,20 @@ class Image extends Model
         'image_path',
     ];
 
-    public function post() {
-        return $this->belongsToMany('App\Models\Image', 'image_link_id', 'id');
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Image', 'image_link_id', 'id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\Image', 'image_link_id', 'id');
+    }
+
 
     public function getImagePathAttribute()
     {
         return Storage::url($this->path);
     }
-    
+
 }
