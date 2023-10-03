@@ -1,13 +1,13 @@
 <script setup>
 import 'vuetify/dist/vuetify.min.css'
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 
 </script>
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <DashboardLayout>
     <!-- <div class="w-50 h-50 overflow-hidden rounded-full border-4 border-white">
         <img src="/images/image-1@2.jpg" alt="User Avatar" class="w-full h-full object-cover rounded-full">
     </div>
@@ -72,7 +72,7 @@ import { Head } from "@inertiajs/vue3";
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </DashboardLayout>
 </template>
 <script type="module">
     export default {
