@@ -1,12 +1,13 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { Head } from "@inertiajs/vue3";
 import 'vuetify/dist/vuetify.min.css'
 </script>
 <template>
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <DashboardLayout>
         <div class="flex-col flex items-center justify-center mt-8">
             <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
                 <div class="m-6">
@@ -97,7 +98,7 @@ import 'vuetify/dist/vuetify.min.css'
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
+    </DashboardLayout>
 </template>
 <script type="module">
     export default {

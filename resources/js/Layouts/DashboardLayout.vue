@@ -1,15 +1,31 @@
 <script setup>
 import "vuetify/dist/vuetify.min.css";
 import "tw-elements";
-import SidebarComponent  from './LayoutComponents/SidebarComponent.vue';
-import FooterComponent  from './LayoutComponents/FooterComponent.vue';
-import HeaderComponent  from './LayoutComponents/HeaderComponent.vue';
+import SidebarComponent from './LayoutComponents/SidebarComponent.vue';
+import FooterComponent from './LayoutComponents/FooterComponent.vue';
+import HeaderComponent from './LayoutComponents/HeaderComponent.vue';
+import { ref, onMounted } from "vue";
 
+const userInfo = ref([]);
 
+const loadUserInfo = async () => {
+    try {
+        const response = await axios.get('/user/get-user-info');
+        userInfo.value = response.data;
+    } catch (error) {
+        console.error('Error loading user info', error);
+    }
+};
+onMounted(
+    loadUserInfo
+);
 </script>
 <template #header>
     <div class="w-full relative flex ct-docs-disable-sidebar-content">
-        <SidebarComponent></SidebarComponent>
+        <SidebarComponent
+            :userInfo="userInfo"
+        >
+        </SidebarComponent>
         <div class="relative md:ml-64 bg-blueGray-100 w-full">
             <HeaderComponent></HeaderComponent>
             <div class="relative pt-32 pb-32 bg-lightBlue-500">
@@ -19,3 +35,7 @@ import HeaderComponent  from './LayoutComponents/HeaderComponent.vue';
         </div>
     </div>
 </template>
+<script>
+export default {
+}
+</script>

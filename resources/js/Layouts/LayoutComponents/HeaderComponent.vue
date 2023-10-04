@@ -1,13 +1,13 @@
 <template>
     <nav
-        class="absolute top-0 left-0 w-full z-10 bg-white lg:flex-row lg:flex-nowrap lg:justify-start flex items-center py-1 px-4 lg:bg-transparent"
+        class="absolute top-0 left-0 w-full z-10 lg:flex-row lg:flex-nowrap lg:justify-start flex items-center py-1 px-4 lg:bg-blue-100"
     >
         <div
             class="w-full mx-aut0 items-center flex justify-between lg:flex-nowrap flex-wrap lg:px-6 px-4"
         >
             <a
                 href="javascript:;"
-                class="text-blueGray-800 lg:text-white text-sm uppercase inline-block font-semibold my-3"
+                class="text-blueGray-800 lg:text-blue-800 text-sm uppercase inline-block font-semibold my-3"
                 >Settings Page</a
             >
             <button

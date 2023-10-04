@@ -1,21 +1,11 @@
 <script setup>
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { Head } from "@inertiajs/vue3";
 import "vuetify/dist/vuetify.min.css";
 import { ref, onMounted } from "vue";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 
-const userInfo = ref([]);
-
-const loadUserInfo = async () => {
-    try {
-        const response = await axios.get('/user/get-user-info');
-        userInfo.value = response.data;
-    } catch (error) {
-        console.error('Error loading user info', error);
-    }
-};
 
 const listPost = ref([]);
 const test = {
@@ -41,31 +31,12 @@ const load = async ($state) => {
         .finally(() => console.log("loading finally"));
 };
 
-onMounted(
-    loadUserInfo
-);
+
 </script>
 <template>
     <Head title="Post" />
-    <AuthenticatedLayout>
+    <DashboardLayout >
         <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-2 bg-gray-800 text-white p-4">
-                <h2 class="text-xl font-semibold mb-4">MENU</h2>
-                <!-- Profile Info -->
-                <div class="flex items-center space-x-4 mb-6">
-                    <img :src=userInfo.profile_image alt="Profile Image" class="w-12 h-12 rounded-full" />
-                    <div>
-                        <h3 class="text-lg font-semibold">{{ userInfo.name }}</h3>
-                        <p class="text-gray-400">Web Developer</p>
-                    </div>
-                </div>
-                <!-- Navigation -->
-                <nav class="space-y-2">
-                    <a href="#" class="block text-gray-400 hover:text-white">Home</a>
-                    <a href="#" class="block text-gray-400 hover:text-white">Profile</a>
-                    <!-- Add more navigation links -->
-                </nav>
-            </div>
             <div class="col-span-8 mt-4">
                 <div class="grid grid-cols-8 gap-4">
                     <div class="col-span-1"></div>
@@ -124,7 +95,7 @@ onMounted(
         <template>
             <InfiniteLoading />
         </template>
-    </AuthenticatedLayout>
+    </DashboardLayout>
 </template>
 
 <script>
