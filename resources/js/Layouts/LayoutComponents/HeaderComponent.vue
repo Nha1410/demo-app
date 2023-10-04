@@ -6,7 +6,6 @@
             class="w-full mx-aut0 items-center flex justify-between lg:flex-nowrap flex-wrap lg:px-6 px-4"
         >
             <a
-                href="javascript:;"
                 class="text-blueGray-800 lg:text-blue-800 text-sm uppercase inline-block font-semibold my-3"
                 >Settings Page</a
             >
@@ -37,7 +36,7 @@
                             ><img
                                 alt="..."
                                 class="w-full rounded-full align-middle border-none shadow-lg"
-                                src="https://demos.creative-tim.com/notus-pro-react/static/media/team-1-800x800.fa5a7ac2.jpg"
+                                :src=userInfo.profile_image
                         /></span>
                     </div>
                 </a>
@@ -46,15 +45,12 @@
                         class="bg-white text-base float-left p-2 border list-none text-left rounded-lg shadow-lg min-w-48 transition-all duration-100 ease-in-out transform scale-95 opacity-0 absolute origin-top-right"
                     >
                         <a
-                            href="javascript:;"
                             class="text-sm px-3 py-2 block w-full whitespace-nowrap bg-transparent hover:bg-blueGray-100 rounded transition-all duration-100"
                             >Action</a
                         ><a
-                            href="javascript:;"
                             class="text-sm px-3 py-2 block w-full whitespace-nowrap bg-transparent hover:bg-blueGray-100 rounded transition-all duration-100"
                             >Another action</a
                         ><a
-                            href="javascript:;"
                             class="text-sm px-3 py-2 block w-full whitespace-nowrap bg-transparent hover:bg-blueGray-100 rounded transition-all duration-100"
                             >Something else here</a
                         >
@@ -62,7 +58,6 @@
                             class="h-0 my-2 border border-solid border-blueGray-100"
                         ></div>
                         <a
-                            href="javascript:;"
                             class="text-sm px-3 py-2 block w-full whitespace-nowrap bg-transparent hover:bg-blueGray-100 rounded transition-all duration-100"
                             >Seprated link</a
                         >
@@ -72,3 +67,13 @@
         </div>
     </nav>
 </template>
+<script>
+export default {
+    props: {
+        userInfo: Object,
+    },
+    setup(props) {
+    // Access the prop using 'props'
+    }
+}
+</script>

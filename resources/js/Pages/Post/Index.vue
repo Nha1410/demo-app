@@ -37,7 +37,7 @@ const load = async ($state) => {
     <Head title="Post" />
     <DashboardLayout >
         <div class="grid grid-cols-12 gap-4">
-            <div class="col-span-8 mt-4">
+            <div class="col-span-9 mt-4">
                 <div class="grid grid-cols-8 gap-4">
                     <div class="col-span-1"></div>
                     <!-- Post -->
@@ -76,7 +76,7 @@ const load = async ($state) => {
                     <div class="col-span-1"></div>
                 </div>
             </div>
-            <div class="col-span-2 bg-gray-200 p-4">
+            <div class="col-span-3 bg-gray-200 p-4">
                 <h2 class="text-xl font-semibold mb-4">Friend List</h2>
                 <!-- Friends -->
                 <ul class="space-y-2">

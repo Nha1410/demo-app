@@ -20,16 +20,20 @@ onMounted(
     loadUserInfo
 );
 </script>
-<template #header>
+<template #header >
     <div class="w-full relative flex ct-docs-disable-sidebar-content">
         <SidebarComponent
             :userInfo="userInfo"
         >
         </SidebarComponent>
         <div class="relative md:ml-64 bg-blueGray-100 w-full">
-            <HeaderComponent></HeaderComponent>
-            <div class="relative pt-32 pb-32 bg-lightBlue-500">
-                <slot></slot>
+            <HeaderComponent
+                :userInfo="userInfo"
+            ></HeaderComponent>
+            <div class="relative pt-16 pb-32 bg-lightBlue-500">
+                <slot
+                    name="customSlot" :userInfo="userInfo"
+                ></slot>
                 <FooterComponent></FooterComponent>
             </div>
         </div>
