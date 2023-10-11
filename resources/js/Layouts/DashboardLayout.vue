@@ -31,9 +31,7 @@ onMounted(
                 :userInfo="userInfo"
             ></HeaderComponent>
             <div class="relative pt-16 pb-32 bg-lightBlue-500">
-                <slot
-                    name="customSlot" :userInfo="userInfo"
-                ></slot>
+                <slot></slot>
                 <FooterComponent></FooterComponent>
             </div>
         </div>

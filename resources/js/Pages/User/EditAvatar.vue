@@ -8,7 +8,6 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
     <Head title="Dashboard" />
 
     <DashboardLayout>
-        <template v-slot:customSlot="{ userInfo }">
             <div class="flex-col flex items-center justify-center py-20">
                 <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
                     <div class="m-4">
@@ -24,17 +23,8 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
     
                                 >
                                     <div class="relative">
-                                        
                                         <img
-                                        v-if="userInfo.profile_image && !imagePreview"
-                                        class="h-auto max-w-[20rem] rounded-full"
-                                        :src = userInfo.profile_image
-                                        alt="image description"
-                                        
-                                        />
-    
-                                        <img
-                                        v-if="!userInfo.profile_image && !imagePreview"
+                                        v-if="!imagePreview"
                                         class="h-auto max-w-[20rem] rounded-full"
                                         src="/images/image-preview.jpg"
                                         alt="image description"
@@ -78,7 +68,6 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
                     </div>
                 </div>
             </div>
-        </template>
     </DashboardLayout>
 </template>
 <script type="module">
