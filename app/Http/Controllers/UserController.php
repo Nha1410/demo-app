@@ -12,8 +12,6 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    protected const IMAGE_TYPE = 'avatar';
-
     protected $userRepository;
     protected $imageRepository;
     public function __construct(
@@ -33,7 +31,7 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $user = Auth::user();
-            $image = $this->imageRepository->store($request->file('image'), self::IMAGE_TYPE, $user->id);
+            $image = $this->imageRepository->store($request->file('image'), $this->userRepository->getModel(), $user->id);
 
             $path = $this->userRepository->storeAvatar($image->path, $user);
             return response()->json($path);

@@ -38,9 +38,9 @@ class Post extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function images(): HasMany
+    public function images()
     {
-        return $this->hasMany('App\Models\Image', 'image_link_id', 'id');
+        return $this->morphMany('App\Models\Image', 'image_link');
     }
 
 }

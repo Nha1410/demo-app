@@ -5,9 +5,9 @@
         <div
             class="w-full mx-aut0 items-center flex justify-between lg:flex-nowrap flex-wrap lg:px-6 px-4"
         >
-            <a
+            <a  href="/post"
                 class="text-blueGray-800 lg:text-blue-800 text-sm uppercase inline-block font-semibold my-3"
-                >Settings Page</a
+                >Home Page</a
             >
             <button
                 class="ml-auto cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-blueGray-400 rounded bg-transparent block outline-none focus:outline-none text-blueGray-300 lg:hidden"
@@ -29,7 +29,7 @@
                         />
                     </div>
                 </form>
-                <a class="text-blueGray-500 block" href="javascript:;">
+                <a class="text-blueGray-500 block" href="/user/edit-avatar">
                     <div class="items-center flex">
                         <span
                             class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"

@@ -20,7 +20,7 @@ class Image extends Model
     protected $fillable = [
         'id',
         'image_link_id',
-        'image_type',
+        'image_link_type',
         'path',
     ];
 
@@ -28,14 +28,9 @@ class Image extends Model
         'image_path',
     ];
 
-    public function post(): BelongsTo
+    public function imageable()
     {
-        return $this->belongsTo('App\Models\Image', 'image_link_id', 'id');
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo('App\Models\Image', 'image_link_id', 'id');
+        return $this->morphTo();
     }
 
 

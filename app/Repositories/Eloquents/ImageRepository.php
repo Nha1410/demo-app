@@ -36,7 +36,7 @@ class ImageRepository extends Repository implements ContractsImageRepository
 
         try {
             $image['path'] = $path;
-            $image['image_type'] = $image_type;
+            $image['image_link_type'] = $image_type;
             $image['image_link_id'] = $postId;
             $image_store = app()->make($this->getModel())->fill($image);
             $image_store->save();

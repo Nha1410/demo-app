@@ -2,7 +2,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { Head } from "@inertiajs/vue3";
-import 'vuetify/dist/vuetify.min.css'
+
 </script>
 <template>
     <Head title="Dashboard" />

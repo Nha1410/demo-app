@@ -13,8 +13,6 @@ use Inertia\Inertia;
 
 class PostController extends Controller
 {
-    protected const IMAGE_TYPE = 'post';
-
     /**
      * @var \App\Repositories\Contracts\PostRepository
      */
@@ -45,7 +43,7 @@ class PostController extends Controller
         $post = $this->postRepository->store($request->all());
 
         if ($request->hasFile('image')) {
-            $this->imageRepository->store($request->file('image'), self::IMAGE_TYPE , $post['id']);
+            $this->imageRepository->store($request->file('image'), $this->postRepository->getModel() , $post['id']);
         }
 
         return  $post ? response()->json($post) : response()->json([

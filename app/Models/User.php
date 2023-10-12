@@ -57,9 +57,9 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Post');
     }
 
-    public function images(): HasMany
+    public function images()
     {
-        return $this->hasMany('App\Models\Image', 'image_link_id', 'id');
+        return $this->morphMany('App\Models\Image', 'image_link');
     }
 
     public function getProfileImageAttribute()
