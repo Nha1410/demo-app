@@ -59,7 +59,7 @@ class User extends Authenticatable
 
     public function images()
     {
-        return $this->morphMany('App\Models\Image', 'image_link');
+        return $this->morphMany('App\Models\Image', 'imageable');
     }
 
     public function getProfileImageAttribute()

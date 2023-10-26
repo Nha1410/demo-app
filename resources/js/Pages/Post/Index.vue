@@ -5,6 +5,7 @@ import "vuetify/dist/vuetify.min.css";
 import { ref, onMounted } from "vue";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
+import CommentSection from './Components/CommentSection.vue';
 
 
 const listPost = ref([]);
@@ -36,7 +37,7 @@ const load = async ($state) => {
 <template>
     <Head title="Post" />
     <DashboardLayout >
-        <div class="grid grid-cols-12 gap-4">
+        <div class="bg-[#F0F2F5] grid grid-cols-12 gap-4">
             <div class="col-span-9 mt-4">
                 <div class="grid grid-cols-8 gap-4">
                     <div class="col-span-1"></div>
@@ -49,9 +50,9 @@ const load = async ($state) => {
                             <p class="text-gray-600">
                                 {{ post.content }}
                             </p>
-                            <div class="w-full flex items-center justify-center" v-for="image in post.images"
+                            <div class="w-full max-h-[500px] flex items-center justify-center" v-for="image in post.images"
                                 :key="image.id">
-                                <img :src="image.image_path" alt="Image" class="m-4 rounded max-w-full w-[96%]" />
+                                <img :src="image.image_path" alt="Image" class="m-4 max-h-[500px] rounded max-w-full w-auto" />
                             </div>
                             <!-- Like, Comment, Share buttons -->
                             <div class="flex items-center space-x-4 mt-4">
@@ -59,7 +60,7 @@ const load = async ($state) => {
                                     <i class="fa-solid fa-heart"></i>
                                     <span class="ml-1">Like</span>
                                 </button>
-                                <button class="flex items-center text-gray-400 hover:text-blue-500">
+                                <button @click="toggleCommentSection(post.id)" class="flex items-center text-gray-400 hover:text-blue-500">
                                     <i class="fa-solid fa-comment"></i>
                                     <span class="ml-1">Comment</span>
                                 </button>
@@ -68,6 +69,7 @@ const load = async ($state) => {
                                     <span class="ml-1">Share</span>
                                 </button>
                             </div>
+                            <CommentSection v-if="showCommentSection === post.id" />
                         </div>
                         <!-- Repeat for other posts -->
                         <InfiniteLoading @infinite="load" class="flex justify-center" :slots="test" />
@@ -103,6 +105,19 @@ import { onMounted } from "vue";
 
 export default {
     name: "App",
+    data() {
+        return {
+        showCommentSection: null,
+        };
+    },
+    methods: {
+        toggleCommentSection(postId) {
+            this.showCommentSection = this.showCommentSection === postId ? null : postId;
+        },
+    },
+    components: {
+        CommentSection,
+    },
 };
 </script>
 

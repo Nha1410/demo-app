@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('images', function (Blueprint $table) {
-            $table->renameColumn('image_type', 'image_link_type');
+            $table->renameColumn('image_type', 'imageable_type');
+            $table->renameColumn('image_link_id', 'imageable_id');
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('images', function (Blueprint $table) {
             $table->renameColumn('image_link_type', 'image_type');
+            $table->renameColumn('imageable_id', 'image_link_id');
         });
     }
 };

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Repositories\Contracts\ImageRepository;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -31,7 +32,7 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $user = Auth::user();
-            $image = $this->imageRepository->store($request->file('image'), $this->userRepository->getModel(), $user->id);
+            $image = $this->imageRepository->store($request->file('image'), $user , $user->id);
 
             $path = $this->userRepository->storeAvatar($image->path, $user);
             return response()->json($path);

@@ -5,7 +5,7 @@
         <div
             class="w-full mx-aut0 items-center flex justify-between lg:flex-nowrap flex-wrap lg:px-6 px-4"
         >
-            <a  href="/post"
+            <a  :href="route('post.index')"
                 class="text-blueGray-800 lg:text-blue-800 text-sm uppercase inline-block font-semibold my-3"
                 >Home Page</a
             >
@@ -29,13 +29,13 @@
                         />
                     </div>
                 </form>
-                <a class="text-blueGray-500 block" href="/user/edit-avatar">
+                <a class="text-blueGray-500 block" :href="route('user.edit-avatar')">
                     <div class="items-center flex">
                         <span
                             class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"
                             ><img
                                 alt="..."
-                                class="w-full rounded-full align-middle border-none shadow-lg"
+                                class="w-[3rem] h-[3rem] rounded-full align-middle border-none shadow-lg"
                                 :src=userInfo.profile_image
                         /></span>
                     </div>

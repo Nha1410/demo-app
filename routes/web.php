@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,15 @@ Route::prefix('/post')
         Route::post('/create', [PostController::class, 'store'])->name('store-post');
         Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post');
     });
+
+Route::prefix('/comment')
+    ->name('comment.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/get-list-comment-in-post', [CommentController::class, 'getList'])->name('get-list-comment-in-post');
+        Route::post('/create', [CommentController::class, 'store'])->name('store-comment');
+    });
+
 
 Route::prefix('/user')
     ->name('user.')

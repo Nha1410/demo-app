@@ -60,7 +60,7 @@ import { Head } from "@inertiajs/vue3";
                                     alt="image description"
                                     
                                     />
-                                    <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="h-auto max-w-lg rounded-lg">
+                                    <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="max-h-[300px] h-auto max-w-lg rounded-lg">
                                     <v-btn 
                                         v-if="imagePreview"
                                         color="primary" 
