@@ -33,7 +33,6 @@ class Image extends Model
         return $this->morphTo();
     }
 
-
     public function getImagePathAttribute()
     {
         return Storage::url($this->path);

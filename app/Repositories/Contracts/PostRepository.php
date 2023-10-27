@@ -3,11 +3,12 @@
 namespace App\Repositories\Contracts;
 
 use App\Models\Post;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 
 interface PostRepository extends Repository
 {
-    public function store(array $data): ?Post;
+    public function store(array $data, UploadedFile $file): ?Post;
 
     /**
      * Get All with paginator

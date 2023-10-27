@@ -31,7 +31,10 @@ class ImageRepository extends Repository implements ContractsImageRepository
         return Image::class;
     }
 
-    public function store(UploadedFile $data, Model|Authenticatable $model, $modelId = null): ?Image
+    /**
+     *
+     */
+    public function store(UploadedFile $data, $model, $modelId = null): ?Image
     {
         $path = $this->handleImageService->storeLocalStorage($data,  $model::class, $modelId);
 
@@ -41,7 +44,7 @@ class ImageRepository extends Repository implements ContractsImageRepository
             $image = new Image([
                 'path' => $path,
             ]);
-    
+
             $model->images()->save($image);
             DB::commit();
             return $image->refresh();

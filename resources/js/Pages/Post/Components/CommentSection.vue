@@ -15,7 +15,7 @@
       <!-- Form bình luận -->
       <div>
         <h3 class="text-lg font-semibold mb-2">Thêm bình luận mới</h3>
-        <form @submit.prevent="addComment(e)" class="">
+        <form @submit.prevent="addComment($event)" class="">
           <resize-textarea 
             v-model="newComment" 
             class="w-full p-2 border rounded"
@@ -31,6 +31,8 @@
 </template>
   
   <script>
+import axios from 'axios';
+
   export default {
     data() {
       return {
@@ -39,25 +41,40 @@
           { author: 'Người 2', content: 'Nội dung bình luận 2' },
         ],
         newComment: '',
+        formPost: {
+          content: '',
+          selectedImage: '',
+        }
       };
+    },
+    props: {
+      postId: {
+        type: Number,
+        default: '',
+      },
+      commentPostRoute: {
+        type: String,
+        default: '',
+      }
     },
     methods: {
       addComment(e) {
         e.preventDefault();
-            // let formData = new FormData();
-            // formData.append('title', this.formPost.title);
-            // formData.append('content', this.formPost.content);
-            // formData.append('image', this.formPost.selectedImage);
-            // try {
-            //     const response = await axios.post('/post/create', formData);
-            //     console.log(response.data);
-            // } catch (error) {
-            //     console.error(error);
-            // }
-        if (this.newComment.trim() !== '') {
-          this.comments.push({ author: 'Bạn', content: this.newComment });
-          this.newComment = '';
-        }
+          console.log(this);
+          console.log(this.commentPostRoute);
+          let formData = new FormData();
+            formData.append('content', this.formPost.content);
+            formData.append('image', this.formPost.selectedImage);
+            axios
+              .post(this.commentPostRoute, formData)
+              .then((res) => console.log(res))
+              .finally(() => {
+                  if (this.newComment.trim() !== '') {
+                    this.comments.push({ author: 'Bạn', content: this.newComment });
+                    this.newComment = '';
+                  }
+                }
+              )
       },
     },
   };

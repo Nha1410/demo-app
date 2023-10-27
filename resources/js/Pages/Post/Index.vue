@@ -69,7 +69,13 @@ const load = async ($state) => {
                                     <span class="ml-1">Share</span>
                                 </button>
                             </div>
-                            <CommentSection v-if="showCommentSection === post.id" />
+                            <Transition name="slide-fade" mode="out-in">
+                                <CommentSection 
+                                    v-if="showCommentSection === post.id" 
+                                    :postId="post.id" 
+                                    :commentPostRoute = "route('comment.store-comment')"
+                                />
+                            </Transition>
                         </div>
                         <!-- Repeat for other posts -->
                         <InfiniteLoading @infinite="load" class="flex justify-center" :slots="test" />
@@ -122,5 +128,26 @@ export default {
 </script>
 
 <style>
-/* Add Tailwind CSS here or in a separate file */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 </style>

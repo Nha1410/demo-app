@@ -7,7 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 
-interface ImageRepository extends Repository 
+interface ImageRepository extends Repository
 {
-    public function store(UploadedFile $data, Model|Authenticatable $model, $modelId = null): ?Image;
+    public function store(UploadedFile $data, $model, $modelId = null): ?Image;
 }

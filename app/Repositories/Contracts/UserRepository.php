@@ -8,6 +8,6 @@ use Illuminate\Support\Collection;
 
 interface UserRepository extends Repository
 {
-    public function storeAvatar($path, ?User $auth = null): string;
+    public function storeAvatar(UploadedFile $file, ?User $auth = null): string;
     public function getInfo($data) : ?User;
 }

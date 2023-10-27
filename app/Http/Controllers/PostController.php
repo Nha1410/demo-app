@@ -40,11 +40,7 @@ class PostController extends Controller
     */
     public function store(Request $request): JsonResponse | JsonResource
     {
-        $post = $this->postRepository->store($request->all());
-
-        if ($request->hasFile('image')) {
-            $this->imageRepository->store($request->file('image'), $post, $post['id']);
-        }
+        $post = $this->postRepository->store($request->all(), $request->file('image'));
 
         return  $post ? response()->json($post) : response()->json([
             'message' => __('Created failure.'),

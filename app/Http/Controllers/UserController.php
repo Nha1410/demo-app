@@ -32,9 +32,8 @@ class UserController extends Controller
     {
         if ($request->hasFile('image')) {
             $user = Auth::user();
-            $image = $this->imageRepository->store($request->file('image'), $user , $user->id);
 
-            $path = $this->userRepository->storeAvatar($image->path, $user);
+            $path = $this->userRepository->storeAvatar($request->file('image'), $user);
             return response()->json($path);
         } else {
             response()->json([

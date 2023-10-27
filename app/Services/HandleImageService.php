@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class HandleImageService extends Service
 {
-    public function storeLocalStorage(UploadedFile $data, $type = '', $linked_id)
+    public function storeLocalStorage(UploadedFile $data, $type = '')
     {
         $filePath = now()->format('Ymd').'/'.str()->random(40);
-        $path = "images/{$type}/{$linked_id}/{$filePath}.".$data->getClientOriginalExtension();
+        $path = "images/{$type}/{$filePath}.".$data->getClientOriginalExtension();
 
         $image = Image::make($data->getRealPath());
         if($type == 'avatar') {
