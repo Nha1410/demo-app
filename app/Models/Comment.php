@@ -15,14 +15,19 @@ class Comment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'commentable_id',
         'commentable_type',
         'content',
+        'user_id',
     ];
 
     public function commentable()
     {
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

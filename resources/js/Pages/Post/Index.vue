@@ -70,10 +70,11 @@ const load = async ($state) => {
                                 </button>
                             </div>
                             <Transition name="slide-fade" mode="out-in">
-                                <CommentSection 
-                                    v-if="showCommentSection === post.id" 
-                                    :postId="post.id" 
+                                <CommentSection
+                                    v-if="showCommentSection[post.id]"
+                                    :postId="post.id"
                                     :commentPostRoute = "route('comment.store-comment')"
+                                    :showCommentSection = "showCommentSection"
                                 />
                             </Transition>
                         </div>
@@ -113,12 +114,15 @@ export default {
     name: "App",
     data() {
         return {
-        showCommentSection: null,
+            showCommentSection: {},
         };
     },
     methods: {
         toggleCommentSection(postId) {
-            this.showCommentSection = this.showCommentSection === postId ? null : postId;
+            this.$data.showCommentSection = {
+                ...this.$data.showCommentSection,
+                [postId]: !this.$data.showCommentSection[postId],
+            };
         },
     },
     components: {

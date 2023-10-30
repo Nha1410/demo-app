@@ -15,14 +15,15 @@ class CommentRepository extends Repository implements ContractsCommentRepository
         return Comment::class;
     }
 
-    public function store(array $data): ?Comment
+    public function store(array $data, $model): ?Comment
     {
         DB::beginTransaction();
 
         try {
             $data['user_id'] = Auth::user()->id;
             $comment = $this->model()->fill($data);
-            $comment->save();
+            $model->comments()->save($comment);
+
             DB::commit();
 
             return $comment->refresh();

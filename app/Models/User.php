@@ -63,6 +63,11 @@ class User extends Authenticatable
         return $this->morphMany('App\Models\Image', 'imageable');
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
     public function getProfileImageAttribute()
     {
         return Storage::url($this->profile_image_path);

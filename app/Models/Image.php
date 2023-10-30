@@ -18,7 +18,6 @@ class Image extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'imageable_id',
         'imageable_type',
         'path',

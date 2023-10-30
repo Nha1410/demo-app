@@ -45,6 +45,6 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->morphMany('App\Models\Image', 'commentable');
+        return $this->morphMany('App\Models\Comment', 'commentable');
     }
 }
