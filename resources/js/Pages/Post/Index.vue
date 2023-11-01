@@ -74,7 +74,9 @@ const load = async ($state) => {
                                     v-if="showCommentSection[post.id]"
                                     :postId="post.id"
                                     :commentPostRoute = "route('comment.store-comment')"
+                                    :isLoadingComment = "isLoadingComment"
                                     :showCommentSection = "showCommentSection"
+                                    :comments = "comments"
                                 />
                             </Transition>
                         </div>
@@ -115,15 +117,31 @@ export default {
     data() {
         return {
             showCommentSection: {},
+            comments: [], 
+            isLoadingComment: false,
         };
     },
     methods: {
         toggleCommentSection(postId) {
+            this.loadComments(postId);
             this.$data.showCommentSection = {
                 ...this.$data.showCommentSection,
                 [postId]: !this.$data.showCommentSection[postId],
             };
         },
+        loadComments(postId) {
+            this.isLoadingComment = true;
+            axios.get(route('comment.get-list-comment-in-post'), { params: {'postId': postId} })
+                .then(response => {
+                    this.comments = response.data;
+                })
+                .catch(error => {
+                    console.error('Error loading comments:', error);
+                })
+                .finally(() => {
+                    this.isLoadingComment = false;
+                });
+        }
     },
     components: {
         CommentSection,

@@ -2,15 +2,18 @@
     <div class="comment-section">
         <div class="mt-4">
             <!-- Danh sách bình luận -->
-            <div v-for="(comment, index) in comments" :key="index" class="mb-4">
-                <div class="flex items-center mb-2">
-                    <div class="h-8 w-8 rounded-full bg-gray-400"></div>
-                    <span class="ml-2 font-semibold">{{ comment.author }}</span>
-                    <span class="ml-2 font-light text-[13px]"
-                        >6 minutes ago</span
-                    >
+            <div v-if="!isLoadingComment">
+                <div v-for="(comment, index) in comments" :key="index" class="mb-4">
+                    <div class="flex items-center mb-2">
+                        <div class="h-8 w-8 rounded-full bg-gray-400"></div>
+                        <span class="ml-2 font-semibold">{{ comment.user.name }}</span>
+                            <timeago class="ml-2 font-light text-[13px]" :datetime="comment.created_at"/>
+                    </div>
+                    <p class="text-gray-700">{{ comment.content }}</p>
                 </div>
-                <p class="text-gray-700">{{ comment.content }}</p>
+            </div>
+            <div v-else-if="isLoadingComment">
+                loading...
             </div>
         </div>
 
@@ -19,11 +22,13 @@
             <h3 class="text-lg font-semibold mb-2">Thêm bình luận mới</h3>
             <form @submit.prevent="addComment($event)" class="">
                 <resize-textarea
-                    v-model="formPost.content"
+                    v-model="content"
+                    :modelValue="content"
                     class="w-full p-2 border rounded"
                     type="comment"
                     id="content"
                     :rows="1"
+                    @update:modelValue="(value)=>useUpdatedValue(value)"
                 >
                 </resize-textarea>
                 <button
@@ -43,15 +48,11 @@ import axios from "axios";
 export default {
     data() {
         return {
-            comments: [
-                { author: "Người 1", content: "Nội dung bình luận 1" },
-                { author: "Người 2", content: "Nội dung bình luận 2" },
-            ],
             formPost: {
-                content: "",
                 selectedImage: "",
                 postId: this.postId,
             },
+            content: "",
         };
     },
     props: {
@@ -67,29 +68,39 @@ export default {
             type: Object,
             required: true,
         },
+        comments: {
+            type: Array,
+            required: true,
+        },
+        isLoadingComment: {
+            type: Boolean,
+            required: true,
+            default: false,
+        }
     },
     methods: {
+        useUpdatedValue() {
+            return '';
+        },
         addComment(e) {
             e.preventDefault();
             let formData = new FormData();
-            formData.append("content", this.formPost.content);
+            formData.append("content", this.content);
             formData.append("postId", this.formPost.postId);
             formData.append("image", this.formPost.selectedImage);
             axios
                 .post(this.commentPostRoute, formData)
-                .then((res) => console.log(res))
-                .finally(() => {
-                    if (this.formPost.content.trim() !== "") {
-                        this.comments.push({
-                            author: "Bạn",
-                            content: this.formPost.content,
-                        });
-                        this.formPost.content = "";
+                .then((res) => {
+                    console.log(res);
+                    if (this.content.trim() !== "") {
+                        this.comments.push(res.data);
                     }
+                    this.content = "";
+                })
+                .catch((error) => {
+                    console.error(error);
                 });
         },
     },
 };
 </script>
-
-<style scoped></style>
