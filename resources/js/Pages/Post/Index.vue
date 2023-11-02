@@ -9,6 +9,10 @@ import CommentSection from './Components/CommentSection.vue';
 
 
 const listPost = ref([]);
+const showCommentSection = ref({});
+const comments = ref([]);
+const isLoadingComment = ref(false);
+const pageForComment = ref(1);
 const test = {
     complete: "test",
 };
@@ -31,12 +35,37 @@ const load = async ($state) => {
         .catch((e) => console.log(e))
         .finally(() => console.log("loading finally"));
 };
+const loadMoreComment = async (postId) => {
+    pageForComment.value++;
+    await loadComments(postId);
+};
+const toggleCommentSection = async (postId) => {
+    if (!showCommentSection.value[postId]) {
+        await loadComments(postId);
+    } else {
+        comments.value = comments.value.filter(comment => comment.commentable_id !== postId);
+    }
+    showCommentSection.value[postId] = !showCommentSection.value[postId];
+};
 
+const loadComments = async (postId) => {
+    isLoadingComment.value = true;
+    await axios.get(
+        `/comment/get-list-comment-in-post?postId=${postId}&page=${pageForComment.value}`
+    ).then((response) => {
+        // comments.value.push(...response.data.map(comment => ({ ...comment, postId })));
+        comments.value.push(...response.data)
+    });
 
+    isLoadingComment.value = false;
+};
+onMounted(() => {
+
+});
 </script>
 <template>
     <Head title="Post" />
-    <DashboardLayout >
+    <DashboardLayout>
         <div class="bg-[#F0F2F5] grid grid-cols-12 gap-4">
             <div class="col-span-9 mt-4">
                 <div class="grid grid-cols-8 gap-4">
@@ -52,7 +81,8 @@ const load = async ($state) => {
                             </p>
                             <div class="w-full max-h-[500px] flex items-center justify-center" v-for="image in post.images"
                                 :key="image.id">
-                                <img :src="image.image_path" alt="Image" class="m-4 max-h-[500px] rounded max-w-full w-auto" />
+                                <img :src="image.image_path" alt="Image"
+                                    class="m-4 max-h-[500px] rounded max-w-full w-auto" />
                             </div>
                             <!-- Like, Comment, Share buttons -->
                             <div class="flex items-center space-x-4 mt-4">
@@ -60,7 +90,8 @@ const load = async ($state) => {
                                     <i class="fa-solid fa-heart"></i>
                                     <span class="ml-1">Like</span>
                                 </button>
-                                <button @click="toggleCommentSection(post.id)" class="flex items-center text-gray-400 hover:text-blue-500">
+                                <button @click="toggleCommentSection(post.id)"
+                                    class="flex items-center text-gray-400 hover:text-blue-500">
                                     <i class="fa-solid fa-comment"></i>
                                     <span class="ml-1">Comment</span>
                                 </button>
@@ -70,20 +101,17 @@ const load = async ($state) => {
                                 </button>
                             </div>
                             <Transition name="slide-fade" mode="out-in">
-                                <CommentSection
-                                    v-if="showCommentSection[post.id]"
-                                    :postId="post.id"
-                                    :commentPostRoute = "route('comment.store-comment')"
-                                    :isLoadingComment = "isLoadingComment"
-                                    :showCommentSection = "showCommentSection"
-                                    :comments = "comments"
-                                />
+                                <CommentSection v-if="showCommentSection[post.id]" :postId="post.id"
+                                    :commentPostRoute="route('comment.store-comment')"
+                                    :isLoadingComment="isLoadingComment"
+                                    :showCommentSection="showCommentSection"
+                                    :comments="comments.filter(comment => comment.commentable_id === post.id)"
+                                    @load-more-comment="loadMoreComment(post.id)" />
                             </Transition>
                         </div>
                         <!-- Repeat for other posts -->
                         <InfiniteLoading @infinite="load" class="flex justify-center" :slots="test" />
                     </div>
-                    <!-- Repeat for other posts -->
                     <div class="col-span-1"></div>
                 </div>
             </div>
@@ -114,35 +142,6 @@ import { onMounted } from "vue";
 
 export default {
     name: "App",
-    data() {
-        return {
-            showCommentSection: {},
-            comments: [], 
-            isLoadingComment: false,
-        };
-    },
-    methods: {
-        toggleCommentSection(postId) {
-            this.loadComments(postId);
-            this.$data.showCommentSection = {
-                ...this.$data.showCommentSection,
-                [postId]: !this.$data.showCommentSection[postId],
-            };
-        },
-        loadComments(postId) {
-            this.isLoadingComment = true;
-            axios.get(route('comment.get-list-comment-in-post'), { params: {'postId': postId} })
-                .then(response => {
-                    this.comments = response.data;
-                })
-                .catch(error => {
-                    console.error('Error loading comments:', error);
-                })
-                .finally(() => {
-                    this.isLoadingComment = false;
-                });
-        }
-    },
     components: {
         CommentSection,
     },
@@ -152,24 +151,25 @@ export default {
 <style>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s ease;
+    transition: opacity 1s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
-  opacity: 0;
+    opacity: 0;
 }
+
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+    transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
+    transform: translateX(20px);
+    opacity: 0;
 }
 </style>

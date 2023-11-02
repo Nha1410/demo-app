@@ -3,8 +3,14 @@
         <div class="mt-4">
             <!-- Danh sách bình luận -->
             <div v-if="!isLoadingComment">
+                <button 
+                class="text-gray-600 font-light cursor-pointer mb-4 font-semibold w-40 h-6 bg-[#E1DDDD] rounded"
+                @click="$emit('loadMoreComment')"
+                >
+                    Load more comment
+                </button>
                 <div v-for="(comment, index) in comments" :key="index" class="mb-4">
-                    <div class="flex items-center mb-2">
+                    <div class="flex items-center mb-1">
                         <div class="h-8 w-8 rounded-full bg-gray-400"></div>
                         <span class="ml-2 font-semibold">{{ comment.user.name }}</span>
                             <timeago class="ml-2 font-light text-[13px]" :datetime="comment.created_at"/>
@@ -29,6 +35,7 @@
                     id="content"
                     :rows="1"
                     @update:modelValue="(value)=>useUpdatedValue(value)"
+                    @keyup.enter="addComment($event)"
                 >
                 </resize-textarea>
                 <button
@@ -80,7 +87,7 @@ export default {
     },
     methods: {
         useUpdatedValue() {
-            return '';
+            return "";
         },
         addComment(e) {
             e.preventDefault();
