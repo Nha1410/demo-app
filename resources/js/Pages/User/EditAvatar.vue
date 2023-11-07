@@ -8,6 +8,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
     <Head title="Dashboard" />
 
     <DashboardLayout>
+        <div class="col-span-9 mt-4">
             <div class="flex-col flex items-center justify-center py-20">
                 <div class="rounded-lg shadow-xl bg-gray-50 lg:w-1/2">
                     <div class="m-4">
@@ -20,7 +21,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
                             >
                                 <div
                                     class="flex flex-col items-center justify-center pt-7"
-    
+
                                 >
                                     <div class="relative">
                                         <img
@@ -28,12 +29,12 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
                                         class="h-auto max-w-[20rem] rounded-full"
                                         src="/images/image-preview.jpg"
                                         alt="image description"
-                                        
+
                                         />
                                         <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="h-auto max-w-[20rem] rounded-full">
-                                        <v-btn 
+                                        <v-btn
                                             v-if="imagePreview"
-                                            color="primary" 
+                                            color="primary"
                                             class="flex z-1 border w-[30px] h-[30px] rounded-full top-[-10px] right-[-10px]"
                                             position="absolute"
                                             rounded="xl"
@@ -68,6 +69,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue';
                     </div>
                 </div>
             </div>
+        </div>
     </DashboardLayout>
 </template>
 <script type="module">

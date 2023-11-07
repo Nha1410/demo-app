@@ -4,6 +4,7 @@ import "tw-elements";
 import SidebarComponent from './LayoutComponents/SidebarComponent.vue';
 import FooterComponent from './LayoutComponents/FooterComponent.vue';
 import HeaderComponent from './LayoutComponents/HeaderComponent.vue';
+import ListFriendComponent from './LayoutComponents/ListFriendComponent.vue';
 import { ref, onMounted } from "vue";
 
 const userInfo = ref([]);
@@ -31,7 +32,10 @@ onMounted(
                 :userInfo="userInfo"
             ></HeaderComponent>
             <div class="relative pt-16 pb-32 bg-lightBlue-500">
-                <slot></slot>
+                <div class="bg-[#F0F2F5] grid grid-cols-12 gap-4">
+                    <slot></slot>
+                    <ListFriendComponent></ListFriendComponent>
+                </div>
                 <FooterComponent></FooterComponent>
             </div>
         </div>

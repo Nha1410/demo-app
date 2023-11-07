@@ -27,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\CommentRepository::class,
             \App\Repositories\Eloquents\CommentRepository::class
         );
+        $this->app->singleton(
+            \App\Repositories\Contracts\FriendRepository::class,
+            \App\Repositories\Eloquents\FriendRepository::class
+        );
     }
 
     /**

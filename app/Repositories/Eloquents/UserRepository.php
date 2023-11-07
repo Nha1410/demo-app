@@ -6,6 +6,7 @@ use App\Repositories\Contracts\UserRepository as ContractsUserRepository;
 use App\Repositories\Repository;
 use App\Traits\HasImage;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -19,6 +20,11 @@ class UserRepository extends Repository implements ContractsUserRepository
         return User::class;
     }
 
+    /**
+     * @param UploadedFile $file
+     * @param User|null $auth
+     * @return string|null
+     */
     public function storeAvatar(UploadedFile $file, ?User $auth = null): string
     {
         DB::beginTransaction();
@@ -34,16 +40,52 @@ class UserRepository extends Repository implements ContractsUserRepository
             DB::commit();
 
             return $image->path;
-
         } catch (\Exception $e) {
             DB::rollBack();
             \Log::error('Error while update user avatar: ' . $e->getMessage());
             return null;
         }
     }
-
-    public function getInfo($data) : ?User
+    /**
+     * @param array $data
+     * @return User|null
+     */
+    public function getInfo($data): ?User
     {
         return $this->model()->where('id', $data['id'])->with('images')->first();
+    }
+
+    /**
+     * @param array $filters
+     * @param User $user
+     * @param array $columns
+     * @return Collection
+     */
+    public function getAllFriends($filters, $user): array
+    {
+        $friendIds = $this->model()->find($user->id)->friends->pluck('friend_id')->toArray();
+        return self::getList($this->model()::whereIn('id', $friendIds), $filters);
+    }
+
+    /**
+     * @param array $filters
+     * @param User $user
+     * @param array $columns
+     * @return Collection
+     */
+    public function getAllNoneFriends($filters, $user): array
+    {
+        $friendIds = $this->model()->find($user->id)->friends->pluck('friend_id')->toArray();
+        return self::getList($this->model()::whereNotIn('id', $friendIds), $filters);
+    }
+
+    private function getList($query, $filters, array $columns = ['*'])
+    {
+        $page = Arr::get($filters, 'page', 1);
+        $perPage = Arr::get($filters, 'per_page', 10);
+
+        return $query->orderByDesc('created_at')
+            ->paginate($perPage, $columns, 'page', $page)
+            ->items();
     }
 }

@@ -72,4 +72,19 @@ class User extends Authenticatable
     {
         return Storage::url($this->profile_image_path);
     }
+
+    public function friends()
+    {
+        return $this->hasMany(Friend::class);
+    }
+
+    public function friendRequestsSent()
+    {
+        return $this->hasMany(FriendRequest::class, 'sender_id');
+    }
+
+    public function friendRequestsReceived()
+    {
+        return $this->hasMany(FriendRequest::class, 'receiver_id');
+    }
 }

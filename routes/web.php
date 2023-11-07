@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FriendController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -78,6 +79,13 @@ Route::prefix('/user')
         Route::get('/edit-avatar', [UserController::class, 'editAvatar'])->name('edit-avatar');
         Route::post('/edit-avatar', [UserController::class, 'storeAvatar'])->name('store-avatar');
         Route::get('/get-user-info', [UserController::class, 'getUserInfo'])->name('get-user-info');
+    });
+Route::prefix('/friend')
+    ->name('friend.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/add-friend-template', [FriendController::class, 'addFriendTemplate'])->name('add-friend-template');
+        Route::get('/get-list', [FriendController::class, 'getList'])->name('get-list');
     });
 
 Route::get('/auth/facebook/callback', function() {

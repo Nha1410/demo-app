@@ -8,7 +8,7 @@ import 'vuetify/dist/vuetify.min.css'
 
 <template>
     <DashboardLayout>
-        <div>
+        <div class="col-span-9 mt-4">
             123
         </div>
     </DashboardLayout>

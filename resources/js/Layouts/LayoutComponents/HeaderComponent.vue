@@ -7,7 +7,7 @@
         >
             <a  :href="route('post.index')"
                 class="text-blueGray-800 lg:text-blue-800 text-sm uppercase inline-block font-semibold my-3"
-                >Home Page</a
+                >POST</a
             >
             <button
                 class="ml-auto cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-blueGray-400 rounded bg-transparent block outline-none focus:outline-none text-blueGray-300 lg:hidden"
@@ -19,14 +19,17 @@
                 class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden"
             >
                 <form
-                    class="flex flex-row flex-wrap items-center ml-auto mr-3 mt-3"
+                    class="flex flex-row items-center mr-auto ml-[27px] mt-3"
                 >
-                    <div class="mb-3 pt-0">
+                    <div class="flex flex-row mb-3 pt-0">
                         <input
                             placeholder="Search here"
                             type="text"
-                            class="border-transparent shadow px-3 py-2 text-sm w-full placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200"
+                            class="w-[320px] border-transparent shadow px-3 py-2 text-sm placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200"
                         />
+                        <a :href="route('friend.add-friend-template')">
+                            <i class="px-3 pt-2 text-blue-700 fa-solid fa-magnifying-glass"></i>
+                        </a>
                     </div>
                 </form>
                 <a class="text-blueGray-500 block" :href="route('user.edit-avatar')">
@@ -35,7 +38,7 @@
                             class="w-12 h-12 text-sm text-white bg-blueGray-300 inline-flex items-center justify-center rounded-full"
                             ><img
                                 alt="..."
-                                class="w-[3rem] h-[3rem] rounded-full align-middle border-none shadow-lg"
+                                class="w-[3rem] h-[3rem] rounded-full align-middle border-none shadow-lg object-cover"
                                 :src=userInfo.profile_image
                         /></span>
                     </div>
