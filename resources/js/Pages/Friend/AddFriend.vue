@@ -26,12 +26,15 @@ onMounted(() => {
     <DashboardLayout>
         <div class="col-span-9 mt-4">
             <div class="friend-list-container">
-                <h2 class="text-2xl font-bold mb-4">Danh sách bạn bè</h2>
+                <h2 class="text-2xl font-bold mb-4">Friends List</h2>
                 <div v-for="friend in listNoneFriends" :key="friend.id" class="friend-card">
                     <img src="/images/image-1@2.jpg" alt="Friend Avatar" class="rounded-full w-16 h-16 object-cover mb-2">
                     <p class="font-semibold">{{ friend.name }}</p>
-                    <button @click="sendFriendRequest(friend.id)" class="hover:bg-blue-300 bg-blue-500 text-white px-4 py-2 rounded-full">
-                        Kết Bạn
+                    <button v-if="!showPendingButton" @click="sendFriendRequest(friend.id)" class="hover:bg-blue-300 bg-blue-500 text-white px-4 py-2 rounded-full">
+                        Make Friend
+                    </button>
+                    <button v-if="showPendingButton" @click="cancelFriendRequest(friend.id)" class="hover:bg-blue-500 bg-blue-300 text-white px-4 py-2 rounded-full">
+                        Sent Request
                     </button>
                 </div>
                 <div class="flex mb-4 items-center justify-center">
@@ -50,13 +53,25 @@ onMounted(() => {
 export default {
     data() {
         return {
+            showPendingButton: false,
         };
     },
     methods: {
-        sendFriendRequest(userId) {
-            console.log(`Adding friend with ID: ${userId}`);
+        sendFriendRequest(friendId) {
+            axios.post(
+                route('friend.send-friend-request', { 'receiver_id': friendId })
+            ).then((res) => {
+                console.log(res);
+                if (res.status == 200) {
+                    this.showPendingButton = true;
+                }
+            });
         },
-    },
+        cancelFriendRequest() {
+            console.log("cancelled");
+        }
+},
+
 };
 </script>
 <style scoped>

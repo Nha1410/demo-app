@@ -80,12 +80,15 @@ Route::prefix('/user')
         Route::post('/edit-avatar', [UserController::class, 'storeAvatar'])->name('store-avatar');
         Route::get('/get-user-info', [UserController::class, 'getUserInfo'])->name('get-user-info');
     });
-Route::prefix('/friend')
+    Route::prefix('/friend')
     ->name('friend.')
     ->middleware('auth')
     ->group(function () {
         Route::get('/add-friend-template', [FriendController::class, 'addFriendTemplate'])->name('add-friend-template');
         Route::get('/get-list', [FriendController::class, 'getList'])->name('get-list');
+        Route::post('/send-friend-request', [FriendController::class, 'createFriendRequest'])->name('send-friend-request');
+        Route::get('/get-list-friend-request', [FriendController::class, 'getListFriendRequest'])->name('get-list-friend-request');
+        Route::post('/handle-friend-request', [FriendController::class, 'handleFriendRequest'])->name('handle-friend-request');
     });
 
 Route::get('/auth/facebook/callback', function() {

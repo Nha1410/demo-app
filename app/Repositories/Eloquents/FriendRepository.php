@@ -17,5 +17,4 @@ class FriendRepository extends Repository implements ContractsFriendRepository
     {
         return Friend::class;
     }
-
 }

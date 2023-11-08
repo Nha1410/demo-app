@@ -64,7 +64,7 @@ class UserRepository extends Repository implements ContractsUserRepository
     public function getAllFriends($filters, $user): array
     {
         $friendIds = $this->model()->find($user->id)->friends->pluck('friend_id')->toArray();
-        return self::getList($this->model()::whereIn('id', $friendIds), $filters);
+        return parent::getList($this->model()::whereIn('id', $friendIds), $filters);
     }
 
     /**
@@ -76,16 +76,6 @@ class UserRepository extends Repository implements ContractsUserRepository
     public function getAllNoneFriends($filters, $user): array
     {
         $friendIds = $this->model()->find($user->id)->friends->pluck('friend_id')->toArray();
-        return self::getList($this->model()::whereNotIn('id', $friendIds), $filters);
-    }
-
-    private function getList($query, $filters, array $columns = ['*'])
-    {
-        $page = Arr::get($filters, 'page', 1);
-        $perPage = Arr::get($filters, 'per_page', 10);
-
-        return $query->orderByDesc('created_at')
-            ->paginate($perPage, $columns, 'page', $page)
-            ->items();
+        return parent::getList($this->model()::whereNotIn('id', $friendIds), $filters);
     }
 }
