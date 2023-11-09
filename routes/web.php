@@ -88,7 +88,7 @@ Route::prefix('/user')
         Route::get('/get-list', [FriendController::class, 'getList'])->name('get-list');
         Route::post('/send-friend-request', [FriendController::class, 'createFriendRequest'])->name('send-friend-request');
         Route::get('/get-list-friend-request', [FriendController::class, 'getListFriendRequest'])->name('get-list-friend-request');
-        Route::post('/handle-friend-request', [FriendController::class, 'handleFriendRequest'])->name('handle-friend-request');
+        Route::put('/handle-friend-request/{friendRequest}', [FriendController::class, 'handleFriendRequest'])->name('handle-friend-request');
     });
 
 Route::get('/auth/facebook/callback', function() {

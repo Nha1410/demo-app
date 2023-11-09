@@ -6,6 +6,7 @@ use App\Models\FriendRequest;
 use App\Models\User;
 use App\Repositories\Contracts\FriendRequestRepository as ContractsFriendRequestRepository;
 use App\Repositories\Repository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class FriendRequestRepository extends Repository implements ContractsFriendRequestRepository
@@ -33,6 +34,26 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
             ->where('status', '=' ,FriendRequest::SENDING_STATUS)
             ->pluck('sender_id')
             ->toArray();
-        return parent::getList($user->whereIn('id', $senderRequestIds), $data);
+        return parent::getList($this->model()->with('sender')->whereIn('sender_id', $senderRequestIds), $data);
+    }
+
+    public function handleFriendRequest(array $data, FriendRequest $friendRequest): FriendRequest
+    {
+        $acceptedStatus = Arr::get($data, 'accept', false);
+        if ($acceptedStatus) {
+            return parent::handleSafely(function () use ($data, $friendRequest) {
+                $data['status'] = FriendRequest::ACCEPTED_STATUS;
+                $friendRequest->fill($data)->save();
+
+                return $friendRequest;
+            });
+        } else {
+            return parent::handleSafely(function () use ($data, $friendRequest) {
+                $friendRequest->status = FriendRequest::DECLINED_STATUS;
+                $friendRequest->save();
+
+                return $friendRequest;
+            });
+        }
     }
 }

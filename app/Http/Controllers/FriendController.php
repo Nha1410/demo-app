@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FriendRequest;
 use App\Repositories\Contracts\FriendRepository;
 use App\Repositories\Contracts\FriendRequestRepository;
 use App\Repositories\Contracts\UserRepository;
@@ -72,12 +73,12 @@ class FriendController extends Controller
         return $listFriendRequest
             ? response()->json($listFriendRequest)
             : response()->json([
-                'message' => __('Send request fail.'),
+                'message' => __('No data found.'),
             ], Response::HTTP_NOT_FOUND);
     }
 
-    public function handleFriendRequest(Request $request)
+    public function handleFriendRequest(Request $request, FriendRequest $friendRequest)
     {
-        // $this->friendRequestRepository;
+        $this->friendRequestRepository->handleFriendRequest($request->all(), $friendRequest);
     }
 }
