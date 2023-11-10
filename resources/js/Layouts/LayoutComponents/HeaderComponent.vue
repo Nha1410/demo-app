@@ -79,7 +79,7 @@ onMounted(() => {
                             <div class="p-4">
                                 <TransitionGroup name="list" tag="ul" enter-active-class="transition ease-out duration-1000"
                                     enter-from-class="opacity-0 scale-95" enter-to-class="opacity-100 scale-100"
-                                    leave-active-class="transition ease-in duration-100"
+                                    leave-active-class="transition ease-in duration-1000"
                                     leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95"
                                     class="py-2">
                                     <li v-for="(friendRequest, index) in listFriendRequests" :key="friendRequest.id"
