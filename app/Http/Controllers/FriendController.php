@@ -9,6 +9,7 @@ use App\Repositories\Contracts\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -29,7 +30,9 @@ class FriendController extends Controller
     }
 
     /**
-     * @param Request $request
+     * Render the add friend template.
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Inertia\Response
      */
     public function addFriendTemplate(Request $request)
@@ -37,6 +40,12 @@ class FriendController extends Controller
         return Inertia::render('Friend/AddFriend', []);
     }
 
+    /**
+     * Get a list of friends or non-friends.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getList(Request $request): JsonResponse
     {
         $user = Auth::user();
@@ -54,6 +63,12 @@ class FriendController extends Controller
             ], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * Create a new friend request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createFriendRequest(Request $request): JsonResponse
     {
         $friendRequest = $this->friendRequestRepository->createFriendRequest($request->all(), Auth::user());
@@ -65,6 +80,12 @@ class FriendController extends Controller
             ], Response::HTTP_NOT_FOUND);
     }
 
+    /**
+     * Get a list of friend requests sent by a user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getListFriendRequest(Request $request) : JsonResponse
     {
         $listFriendRequest = $this->friendRequestRepository->getListFriendRequestByUserId($request->all(), Auth::user());
@@ -77,8 +98,25 @@ class FriendController extends Controller
             ], Response::HTTP_NOT_FOUND);
     }
 
-    public function handleFriendRequest(Request $request, FriendRequest $friendRequest)
+    /**
+     * Handle a friend request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\FriendRequest  $friendRequest
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function handleFriendRequest(Request $request, FriendRequest $friendRequest): JsonResponse
     {
-        $this->friendRequestRepository->handleFriendRequest($request->all(), $friendRequest);
+        $friendRequest = $this->friendRequestRepository->handleFriendRequest($request->all(), $friendRequest);
+
+        if ($friendRequest && Arr::get($request->all(), 'accept', false)) {
+            $this->friendRepository->makeFriendRelationship($friendRequest, Auth::user());
+        }
+
+        return $friendRequest
+            ? response()->json($friendRequest)
+            : response()->json([
+                'message' => __('Update failure'),
+            ], Response::HTTP_BAD_REQUEST);
     }
 }

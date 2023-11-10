@@ -16,6 +16,13 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
         return FriendRequest::class;
     }
 
+    /**
+     * Create a new friend request.
+     *
+     * @param  array  $data
+     * @param  \App\Models\User  $auth
+     * @return \App\Models\FriendRequest
+     */
     public function createFriendRequest(array $data, User $auth): mixed
     {
         return $this->handleSafely(function () use ($data, $auth) {
@@ -28,6 +35,13 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
         }, 'Create friend request');
     }
 
+    /**
+     * Get a list of friend requests sent by a user.
+     *
+     * @param  array  $data
+     * @param  \App\Models\User  $user
+     * @return array
+     */
     public function getListFriendRequestByUserId(array $data, User $user): array
     {
         $senderRequestIds = $user->friendRequestsReceived
@@ -37,6 +51,13 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
         return parent::getList($this->model()->with('sender')->whereIn('sender_id', $senderRequestIds), $data);
     }
 
+    /**
+     * Handle a friend request.
+     *
+     * @param  array  $data
+     * @param  \App\Models\FriendRequest  $friendRequest
+     * @return \App\Models\FriendRequest
+     */
     public function handleFriendRequest(array $data, FriendRequest $friendRequest): FriendRequest
     {
         $acceptedStatus = Arr::get($data, 'accept', false);

@@ -45,10 +45,10 @@ onMounted(() => {
             </button>
             <div
                 class="items-center w-full lg:flex lg:w-auto flex-grow duration-300 transition-all ease-in-out lg:h-auto-important hidden">
-                <div class="flex flex-row items-center mr-auto ml-[27px] mt-3">
-                    <div class="flex flex-row mb-3 pt-0">
+                <div class="flex flex-row items-center w-full justify-center mt-3">
+                    <div class="flex flex-row w-[70%] mb-3 pt-0">
                         <input placeholder="Search here" type="text"
-                            class="w-[320px] border-transparent shadow px-3 py-2 text-sm placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200" />
+                            class=" border-transparent shadow px-3 py-2 text-sm placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200" />
                         <a :href="route('friend.add-friend-template')">
                             <i class="px-3 pt-2 text-blue-700 fa-solid fa-magnifying-glass"></i>
                         </a>
