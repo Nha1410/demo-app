@@ -38,10 +38,22 @@ class AddFriendNotification implements ShouldBroadcastNow
      */
     public function broadcastOn(): array
     {
-        info($this->friendRequest->receiver_id);
         return [
             new PrivateChannel('add-friend-notification.' . $this->friendRequest->receiver_id),
         ];
     }
 
+    /**
+     * Get the data to broadcast.
+     *
+     * @return object
+     */
+    public function broadcastWith()
+    {
+        return [
+            'newFriendRequest' => $this->friendRequest::with('sender')
+                ->where('sender_id', $this->friendRequest->sender_id)
+                ->first(),
+        ];
+    }
 }

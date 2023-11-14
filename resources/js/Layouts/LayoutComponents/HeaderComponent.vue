@@ -40,9 +40,9 @@ const handleFriendRequest = async (friendRequestId, accept, index) => {
 
 const listenNotification = (userInfo) => {
     window.Echo.private(`add-friend-notification.${userInfo.id}`)
-        .listen('AddFriendNotification', (data) => {
-            console.log('New Notification:', data);
-            // listFriendRequests.value.unshift(data.friendRequest);
+        .listen('AddFriendNotification', (res) => {
+            console.log('New Notification:', res.newFriendRequest.name);
+            listFriendRequests.value.unshift(res.newFriendRequest);
         })
         .error((error) => {
             console.error('Error listening for AddFriendNotification:', error);
@@ -115,8 +115,8 @@ onMounted(() => {
                                     <li v-for="(friendRequest, index) in listFriendRequests" :key="friendRequest.id"
                                         class="bg-gray-100 rounded-lg p-2 mb-2">
                                         <div v-if="friendRequest" class="flex flex-row gap-x-2 items-center">
-                                            <div class="w-10 h-10 rounded-full overflow-hidden">
-                                                <img src="/images/blank_avt.png" />
+                                            <div class="w-10 rounded-full overflow-hidden">
+                                                <img :src="friendRequest.sender.profile_image" />
                                             </div>
                                             <p>
                                                 You have a friend request from
