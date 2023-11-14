@@ -13,6 +13,7 @@ const loadUserInfo = async () => {
     try {
         const response = await axios.get('/user/get-user-info');
         userInfo.value = response.data;
+        return response.data;
     } catch (error) {
         console.error('Error loading user info', error);
     }

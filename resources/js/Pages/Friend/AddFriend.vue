@@ -2,19 +2,27 @@
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import 'vuetify/dist/vuetify.min.css'
 import { ref, onMounted } from "vue";
+import { Head } from "@inertiajs/vue3";
 import axios from "axios";
 
 const listNoneFriends = ref([]);
 const page = ref(1);
+const isNoMore = ref(false);
 
 const loadFriends = async () => {
     await axios.get(route('friend.get-list')+`?page=${page.value}`)
         .then((res)=> {
-            listNoneFriends.value.push(...res.data)
+            if (res.status = 200){
+                listNoneFriends.value.push(...res.data)
+                page.value++;
+            }
+        })
+        .catch((err)=> {
+            console.log('no more');
+            isNoMore.value = true;
         });
 }
 const loadMoreFriend = async () => {
-    page.value++;
     await loadFriends();
 }
 onMounted(() => {
@@ -23,6 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
+    <Head title="Add friend" />
     <DashboardLayout>
         <div class="col-span-9 mt-4">
             <div class="friend-list-container">
@@ -40,6 +49,7 @@ onMounted(() => {
                 <div class="flex mb-4 items-center justify-center">
                     <button
                     @click="loadMoreFriend()"
+                    :disabled="isNoMore"
                     class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
                         Button
                     </button>

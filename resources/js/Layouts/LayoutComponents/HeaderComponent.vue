@@ -1,15 +1,25 @@
 <script setup>
 import Dropdown from "@/Components/Dropdown.vue";
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, watch, onMounted, defineProps } from "vue";
+import Echo from 'laravel-echo';
+const props = defineProps({
+    userInfo: Object
+});
+let isUserInfoLoaded = ref(false);
 
 const listFriendRequests = ref([]);
 const page = 1;
 
 const loadFriendRequests = async () => {
-    await axios.get(route("friend.get-list-friend-request")).then((res) => {
-        listFriendRequests.value.push(...res.data);
-    });
+    await axios.get(route("friend.get-list-friend-request"))
+        .then((res) => {
+            listFriendRequests.value.push(...res.data);
+        })
+        .catch((err) => {
+            console.log("No friend requests");
+            // should add toast message
+        });
 };
 
 const handleFriendRequest = async (friendRequestId, accept, index) => {
@@ -18,18 +28,36 @@ const handleFriendRequest = async (friendRequestId, accept, index) => {
     }),
         { accept: accept })
         .then((res) => {
-            console.log(res.status);
             if (res.status == 200) {
                 listFriendRequests.value.splice(index, 1);
             }
         })
         .catch((error) => {
-            console.error(error);
+            console.log("No friend requests");
+            // should add toast message
+        });
+};
+
+const listenNotification = (userInfo) => {
+    window.Echo.private(`add-friend-notification.${userInfo.id}`)
+        .listen('AddFriendNotification', (data) => {
+            console.log('New Notification:', data);
+            // listFriendRequests.value.unshift(data.friendRequest);
+        })
+        .error((error) => {
+            console.error('Error listening for AddFriendNotification:', error);
         });
 };
 
 onMounted(() => {
     loadFriendRequests();
+    // make sure the userInfo is loaded in DashboardComponent
+    watch(() => props.userInfo, (newUserInfo) => {
+        if (newUserInfo) {
+            listenNotification(newUserInfo);
+            isUserInfoLoaded.value = true;
+        }
+    });
 });
 </script>
 <template>
@@ -67,12 +95,14 @@ onMounted(() => {
                             <h1 class="font-bold text-[18px] p-4">Notification</h1>
                             <div class="flex flex-row gap-x-2 justify-evenly">
                                 <button type="button" class="button-choose-active py-1 px-[40px] rounded-[15px]"
-                                    :class="{ 'mb-2 bg-green-400': isAllActive, 'mb-4 bg-gray-200': !isAllActive }" @click="toggleAllActive">
+                                    :class="{ 'mb-2 bg-green-400': isAllActive, 'mb-4 bg-gray-200': !isAllActive }"
+                                    @click="toggleAllActive">
                                     Unread
                                 </button>
 
                                 <button type="button" class="button-choose-active bg-gray-200 py-1 px-[40px] rounded-[15px]"
-                                    :class="{ 'mb-2 bg-green-400': !isAllActive, 'mb-4 bg-gray-200': isAllActive }" @click="toggleAllActive">
+                                    :class="{ 'mb-2 bg-green-400': !isAllActive, 'mb-4 bg-gray-200': isAllActive }"
+                                    @click="toggleAllActive">
                                     All
                                 </button>
                             </div>
@@ -186,15 +216,15 @@ export default {
     opacity: 0;
     transform: translateX(30px);
 }
+
 .button-choose-active {
-  transition: all .2s ease-in-out;
-  transform: scale(1);
+    transition: all .2s ease-in-out;
+    transform: scale(1);
 }
 
 .button-choose-active:hover,
 .button-choose-active:focus {
-  transform: scale(1.05);
-  background-color: #48cf80;
+    transform: scale(1.05);
+    background-color: #48cf80;
 }
-
 </style>

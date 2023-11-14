@@ -73,4 +73,5 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    'profile_photo_default' => 'https://ui-avatars.com/api/?background=random&color=random&name=',
 ];

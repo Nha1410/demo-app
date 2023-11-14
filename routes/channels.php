@@ -16,3 +16,10 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+use App\Models\FriendRequest;
+use App\Models\User;
+
+Broadcast::channel('add-friend-notification.{userId}', function ($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});

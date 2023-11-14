@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Eloquents;
 
+use App\Events\AddFriendNotification;
 use App\Models\FriendRequest;
 use App\Models\User;
 use App\Repositories\Contracts\FriendRequestRepository as ContractsFriendRequestRepository;
@@ -30,6 +31,8 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
             $data['status'] = FriendRequest::SENDING_STATUS;
             $friendRequest = $this->model()->fill($data);
             $friendRequest->save();
+
+            broadcast(new AddFriendNotification($friendRequest));
 
             return $friendRequest;
         }, 'Create friend request');

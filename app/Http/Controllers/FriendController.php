@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\AddFriendNotification;
 use App\Models\FriendRequest;
 use App\Repositories\Contracts\FriendRepository;
 use App\Repositories\Contracts\FriendRequestRepository;
@@ -111,6 +112,7 @@ class FriendController extends Controller
 
         if ($friendRequest && Arr::get($request->all(), 'accept', false)) {
             $this->friendRepository->makeFriendRelationship($friendRequest, Auth::user());
+            broadcast(new AddFriendNotification($friendRequest));
         }
 
         return $friendRequest

@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function getProfileImageAttribute()
     {
-        return Storage::url($this->profile_image_path);
+        return $this->profile_image_path ? Storage::url($this->profile_image_path) : config('filesystems.profile_photo_default', '').$this->name;
     }
 
     public function friends()

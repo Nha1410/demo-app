@@ -10,6 +10,9 @@ const loadFriends = async () => {
     await axios.get(route('friend.get-list')+`?page=${page.value}&hasFriendship=${hasFriendship.value}`)
         .then((res)=> {
             listFriends.value.push(...res.data)
+        })
+        .catch((err)=> {
+            console.log('no friends');
         });
 }
 
