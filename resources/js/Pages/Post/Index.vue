@@ -6,7 +6,7 @@ import { ref, onMounted } from "vue";
 import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 import CommentSection from './Components/CommentSection.vue';
-import ListFriendComponent from '@/Layouts/LayoutComponents/ListFriendComponent.vue';
+import ReactPostSection from './Components/ReactPostSection.vue';
 
 const listPost = ref([]);
 const showCommentSection = ref({});
@@ -17,6 +17,14 @@ const test = {
     complete: "test",
 };
 let page = 1;
+const showDropdownEmoji = ref(true);
+const like = ref({
+    likeCount: 10,
+    loveCount: 5,
+    hahaCount: 3,
+});
+let timeoutId;
+
 const load = async ($state) => {
     console.log("loading");
 
@@ -59,6 +67,22 @@ const loadComments = async (postId) => {
 
     isLoadingComment.value = false;
 };
+const startHover = () => {
+    // showDropdownEmoji.value = false;
+    timeoutId = setTimeout(() => {
+        showDropdownEmoji.value = true;
+    }, 3000);
+};
+
+const endHover = () => {
+    // clearTimeout(timeoutId);
+    // showDropdownEmoji.value = false;
+};
+
+const handleEmojiClick = (emoji) => {
+    console.log(`Selected emoji: ${emoji}`);
+    // showDropdownEmoji.value = false; // Close dropdown after selection
+};
 onMounted(() => {
 
 });
@@ -80,14 +104,41 @@ onMounted(() => {
                         </p>
                         <div class="w-full max-h-[500px] flex items-center justify-center" v-for="image in post.images"
                             :key="image.id">
-                            <img :src="image.image_path" alt="Image" class="m-4 max-h-[500px] rounded max-w-full w-auto object-cover"/>
+                            <img :src="image.image_path" alt="Image"
+                                class="m-4 max-h-[500px] rounded max-w-full w-auto object-cover" />
                         </div>
                         <!-- Like, Comment, Share buttons -->
-                        <div class="flex items-center space-x-4 mt-4">
-                            <button class="flex items-center text-gray-400 hover:text-red-500 mr-2">
-                                <i class="fa-solid fa-heart"></i>
-                                <span class="ml-1">Like</span>
-                            </button>
+                        <div class="flex items-center space-x-4 pt-4">
+                            <div class="relative" @mouseover="startHover">
+                                <button
+                                    class="flex items-center text-gray-400 hover:text-red-500 mr-2">
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span class="ml-1">Like</span>
+                                </button>
+                                <ReactPostSection
+                                    :showDropdownEmoji = "showDropdownEmoji"
+                                ></ReactPostSection>
+                            </div>
+                            <div class="flex items-center cursor-pointer select-none">
+                                <button
+                                    class="flex items-center text-blue-500 rounded px-1 py-1 focus:outline-none hover:bg-blue-100 transition-colors duration-200">
+                                    <i class="fa-solid fa-thumbs-up text-blue-500"></i>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.likeCount }}</span>
+                                </button>
+
+                                <button
+                                    class="flex items-center text-red-500 rounded px-1 py-1 focus:outline-none hover:bg-red-100 transition-colors duration-200">
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.loveCount }}</span>
+                                </button>
+
+                                <button
+                                    class="flex items-center text-yellow-500 rounded px-1 py-1 focus:outline-none hover:bg-yellow-100 transition-colors duration-200">
+                                    <i class="fa-solid fa-face-laugh"></i>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.hahaCount }}</span>
+                                </button>
+                            </div>
+
                             <button @click="toggleCommentSection(post.id)"
                                 class="flex items-center text-gray-400 hover:text-blue-500">
                                 <i class="fa-solid fa-comment"></i>
@@ -98,6 +149,7 @@ onMounted(() => {
                                 <span class="ml-1">Share</span>
                             </button>
                         </div>
+
                         <Transition name="slide-fade" mode="out-in">
                             <CommentSection v-if="showCommentSection[post.id]" :postId="post.id"
                                 :commentPostRoute="route('comment.store-comment')" :isLoadingComment="isLoadingComment"
@@ -152,5 +204,4 @@ export default {
 .slide-fade-leave-to {
     transform: translateX(20px);
     opacity: 0;
-}
-</style>
+}</style>

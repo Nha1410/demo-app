@@ -46,9 +46,9 @@ class AddFriendNotification implements ShouldBroadcastNow
     /**
      * Get the data to broadcast.
      *
-     * @return object
+     * @return mixed
      */
-    public function broadcastWith()
+    public function broadcastWith() : mixed
     {
         return [
             'newFriendRequest' => $this->friendRequest::with('sender')
