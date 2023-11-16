@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('friend_requests', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('sender_id'); // relation to user_id
-            $table->bigInteger('receiver_id'); // relation to user_id
-            $table->integer('status')->comment('1:pending, 2:accepted, 3:declined');  // (trạng thái yêu cầu: pending, accepted, declined, etc.)
+            $table->bigInteger('user_id');
+            $table->bigInteger('likeable_id');
+            $table->string('likeable_type');
+            $table->tinyInteger('emoji_type')->default(1);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('friend_requests');
+        Schema::dropIfExists('likes');
     }
 };

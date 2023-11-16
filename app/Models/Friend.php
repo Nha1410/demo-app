@@ -11,9 +11,9 @@ class Friend extends Model
 {
     use HasFactory, SoftDeletes;
 
-    public const NORMAL_STATUS = 0;
-    public const FAVORITED_STATUS = 1;
-    public const BLOCKED_STATUS = 2;
+    public const NORMAL_STATUS = 1;
+    public const FAVORITED_STATUS = 2;
+    public const BLOCKED_STATUS = 3;
     public const STATUS = [
         self::NORMAL_STATUS => 'normal',
         self::FAVORITED_STATUS => 'favorited',

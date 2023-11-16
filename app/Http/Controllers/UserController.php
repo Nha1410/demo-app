@@ -51,4 +51,14 @@ class UserController extends Controller
                 'message' => __('No data found.'),
             ], Response::HTTP_NOT_FOUND);
     }
+
+    /**
+     * Get a list of users as select box options.
+     */
+    public function getOptions(): JsonResponse
+    {
+        $options = $this->userRepository->getOptions();
+
+        return response()->json($options);
+    }
 }

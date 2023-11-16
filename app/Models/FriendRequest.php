@@ -9,9 +9,9 @@ class FriendRequest extends Model
 {
     use HasFactory;
 
-    public const SENDING_STATUS = 0;
-    public const ACCEPTED_STATUS = 1;
-    public const DECLINED_STATUS = 2;
+    public const SENDING_STATUS = 1;
+    public const ACCEPTED_STATUS = 2;
+    public const DECLINED_STATUS = 3;
     public const STATUS = [
         self::SENDING_STATUS => 'pending',
         self::ACCEPTED_STATUS => 'accepted',

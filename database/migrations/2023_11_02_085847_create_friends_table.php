@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('user_id');
             $table->bigInteger('friend_id');
-            $table->integer('status')->default(0)->comment('0:normal, 1:favorited, 2:blocked');  // (trạng thái mối quan hệ: pending, accepted, blocked, etc.)
+            $table->integer('status')->default(0)->comment('1:normal, 2:favorited, 3:blocked');  // (trạng thái mối quan hệ: pending, accepted, blocked, etc.)
             $table->timestamps();
         });
     }

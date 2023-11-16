@@ -48,7 +48,7 @@ class PostController extends Controller
     }
 
     /*
-    ** get list post and paginate
+    ** Get list post and paginate
     */
     public function getList(Request $request): JsonResponse | JsonResource
     {
