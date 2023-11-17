@@ -13,6 +13,11 @@ class Like extends Model
     public const LIKE_EMOTION = 1;
     public const LOVE_EMOTION = 2;
     public const HAHA_EMOTION = 3;
+    public const EMOTIONS = [
+        self::LIKE_EMOTION => 'fa-solid fa-thumbs-up text-blue-500',
+        self::LOVE_EMOTION => 'fa-solid fa-heart',
+        self::HAHA_EMOTION => 'fa-solid fa-face-laugh'
+    ];
 
     /**
      * The attributes that are mass assignable.

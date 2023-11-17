@@ -12,4 +12,5 @@ interface UserRepository extends Repository
     public function getInfo($data) : ?User;
     public function getAllFriends($filters, $user): array;
     public function getAllNoneFriends($filters, $user): array;
+    public function getOptions(): array;
 }

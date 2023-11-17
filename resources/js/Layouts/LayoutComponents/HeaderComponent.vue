@@ -1,8 +1,8 @@
 <script setup>
 import Dropdown from "@/Components/Dropdown.vue";
 import axios from "axios";
-import { ref, watch, onMounted, defineProps } from "vue";
-import Echo from 'laravel-echo';
+import { ref, watch, onMounted } from "vue";
+
 const props = defineProps({
     userInfo: Object
 });

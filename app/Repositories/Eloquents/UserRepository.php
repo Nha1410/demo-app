@@ -1,6 +1,7 @@
 <?php
 namespace App\Repositories\Eloquents;
 
+use App\Models\Like;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepository as ContractsUserRepository;
 use App\Repositories\Repository;
@@ -77,5 +78,17 @@ class UserRepository extends Repository implements ContractsUserRepository
     {
         $friendIds = $this->model()->find($user->id)->friends->pluck('friend_id')->toArray();
         return parent::getList($this->model()::whereNotIn('id', $friendIds), $filters);
+    }
+
+    /**
+     * Get list of options for user
+     */
+    public function getOptions(): array
+    {
+        $reactionOptions = collect(Like::EMOTIONS)
+            ->map(fn ($label, $value) => compact('value', 'label'))
+            ->values();
+
+        return $reactionOptions->toArray();
     }
 }

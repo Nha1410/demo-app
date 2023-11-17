@@ -79,6 +79,7 @@ Route::prefix('/user')
         Route::get('/edit-avatar', [UserController::class, 'editAvatar'])->name('edit-avatar');
         Route::post('/edit-avatar', [UserController::class, 'storeAvatar'])->name('store-avatar');
         Route::get('/get-user-info', [UserController::class, 'getUserInfo'])->name('get-user-info');
+        Route::get('/get-options', [UserController::class, 'getOptions'])->name('get-options');
     });
     Route::prefix('/friend')
     ->name('friend.')

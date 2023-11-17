@@ -11,6 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import ResizeTextarea from 'resize-textarea-vue3'
 import timeago from 'vue-timeago3'
+import store from './store';
 
 const vuetify = createVuetify({
     components,
@@ -29,6 +30,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(timeago)
             .use(ResizeTextarea)
+            .use(store)
             .mount(el);
     },
     progress: {

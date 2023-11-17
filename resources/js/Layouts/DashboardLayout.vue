@@ -6,9 +6,12 @@ import FooterComponent from './LayoutComponents/FooterComponent.vue';
 import HeaderComponent from './LayoutComponents/HeaderComponent.vue';
 import ListFriendComponent from './LayoutComponents/ListFriendComponent.vue';
 import { ref, onMounted } from "vue";
+import { useStore } from "vuex";
 
 const userInfo = ref([]);
+const store = useStore();
 
+store.dispatch('loadUserOptions');
 const loadUserInfo = async () => {
     try {
         const response = await axios.get('/user/get-user-info');
@@ -18,9 +21,10 @@ const loadUserInfo = async () => {
         console.error('Error loading user info', error);
     }
 };
-onMounted(
-    loadUserInfo
-);
+
+onMounted(() => {
+  loadUserInfo();
+});
 </script>
 <template #header >
     <div class="w-full relative flex ct-docs-disable-sidebar-content">
@@ -44,5 +48,10 @@ onMounted(
 </template>
 <script>
 export default {
+    data() {
+        return {
+
+        }
+    },
 }
 </script>
