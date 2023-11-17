@@ -41,11 +41,27 @@ export default {
 </script>
 <template>
     <div v-if="showDropdownEmoji"
-        class="dropdown py-1 absolute flex bg-gray-100 rounded shadow-md top-[-35px]">
-        <button v-for="icon in emojiIcon" :key="icon.value" @click="handleEmojiClick($event, icon.value, post.id)"
-            class="rounded px-2 py-1 focus:outline-none hover:scale-125 hover:text-blue-700 transition-colors duration-200">
+        class="dropdown my-1 absolute flex bg-blue-100 rounded-[20px] shadow-md top-[-40px] transform transition-transform transition-opacity duration-500"
+        >
+        <button
+            v-for="icon in emojiIcon"
+            :key="icon.value"
+            @click="handleEmojiClick($event, icon.value, post.id)"
+            class="rounded px-2 py-1 focus:outline-none hover:scale-125 hover:text-blue-700"
+            >
             <i :class="icon.label"></i>
         </button>
     </div>
 
 </template>
+<style>
+.transform-enter-active,
+.transform-leave-active {
+  transition: transform 0.5s;
+}
+.transform-enter-from,
+.transform-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+</style>

@@ -20,12 +20,7 @@ const test = {
     complete: "test",
 };
 let page = 1;
-const showDropdownEmoji = ref(false);
-const like = ref({
-    likeCount: 10,
-    loveCount: 5,
-    hahaCount: 3,
-});
+const showDropdownEmoji = ref({});
 
 const load = async ($state) => {
     console.log("loading");
@@ -37,7 +32,7 @@ const load = async ($state) => {
                 $state.complete();
                 console.log("complete");
             } else {
-                listPost.value.push(...res.data);
+                listPost.value.push(...res.data.posts);
             }
             page++;
         })
@@ -68,13 +63,13 @@ const loadComments = async (postId) => {
 
     isLoadingComment.value = false;
 };
-const startHover = () => {
-    showDropdownEmoji.value = true;
+const toggleReactPostSection = (postId) => {
+    showDropdownEmoji.value[postId] = !showDropdownEmoji.value[postId];
 };
 
-const endHover = (event) => {
+const endHover = (event, postId) => {
     event.stopPropagation();
-    showDropdownEmoji.value = false;
+    showCommentSection.value[postId] = false;
 };
 
 onMounted(() => {
@@ -103,36 +98,38 @@ onMounted(() => {
                         </div>
                         <!-- Like, Comment, Share buttons -->
                         <div class="flex items-center space-x-4 pt-4">
-                            <div class="relative" @click="startHover()">
+                            <div class="relative" @click="toggleReactPostSection(post.id)">
                                 <button
                                     class="flex items-center text-gray-400 hover:text-red-500 mr-2">
                                     <i class="fa-solid fa-heart"></i>
-                                    <span class="ml-1">Like</span>
+                                    <p class="ml-1 flex text-blue">{{post.total_count}}
+                                        <span class="ml-1">Reaction</span>
+                                    </p>
                                 </button>
                                 <ReactPostSection
                                     :post="post"
-                                    :showDropdownEmoji = "showDropdownEmoji"
+                                    :showDropdownEmoji = "showDropdownEmoji[post.id]"
                                     :emojiIcon="store.state.userOptions"
-                                    @end-hover="endHover($event)"
+                                    @end-hover="endHover($event, post.id)"
                                 ></ReactPostSection>
                             </div>
                             <div class="flex items-center cursor-pointer select-none">
                                 <button
                                     class="flex items-center text-blue-500 rounded px-1 py-1 focus:outline-none hover:bg-blue-100 transition-colors duration-200">
                                     <i class="fa-solid fa-thumbs-up text-blue-500"></i>
-                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.likeCount }}</span>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ post.like_count }}</span>
                                 </button>
 
                                 <button
                                     class="flex items-center text-red-500 rounded px-1 py-1 focus:outline-none hover:bg-red-100 transition-colors duration-200">
                                     <i class="fa-solid fa-heart"></i>
-                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.loveCount }}</span>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ post.love_count }}</span>
                                 </button>
 
                                 <button
                                     class="flex items-center text-yellow-500 rounded px-1 py-1 focus:outline-none hover:bg-yellow-100 transition-colors duration-200">
                                     <i class="fa-solid fa-face-laugh"></i>
-                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ like.hahaCount }}</span>
+                                    <span class="font-bold text-sm mt-1 ml-[2px]">{{ post.haha_count }}</span>
                                 </button>
                             </div>
 

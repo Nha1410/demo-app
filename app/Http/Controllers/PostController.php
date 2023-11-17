@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repositories\Contracts\ImageRepository;
 use App\Repositories\Contracts\LikeRepository;
@@ -57,9 +58,10 @@ class PostController extends Controller
     */
     public function getList(Request $request): JsonResponse | JsonResource
     {
-        $postList = $this->postRepository->getAll($request->all());
+        $postList = PostResource::collection($this->postRepository->getAll($request->all()));
+        $postList->wrap('posts');
 
-        return  $postList ? response()->json($postList) : response()->json([
+        return  $postList ? $postList : response()->json([
             'message' => __('No data found.'),
         ], Response::HTTP_NOT_FOUND);
     }

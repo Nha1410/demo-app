@@ -84,10 +84,11 @@ onMounted(() => {
                 </div>
                 <Dropdown align="right" width="96" contentClasses="py-1 bg-white w-[420px]">
                     <template #trigger>
-                        <span class="inline-flex rounded-md">
+                        <span class="relative inline-flex rounded-md">
                             <button type="button" class="flex cursor-pointer mr-2">
                                 <i class="px-4 text-gray-600 text-[18px] fa-solid fa-user-group"></i>
                             </button>
+                            <div class="absolute w-2 h-2 bg-red top-[-10%] right-[30%] rounded"></div>
                         </span>
                     </template>
                     <template #content>
