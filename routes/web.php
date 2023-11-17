@@ -48,7 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::get('/slide', [VuetifyController::class, 'slide'])->name('slide');
 
@@ -61,6 +61,7 @@ Route::prefix('/post')
         Route::get('/create', [PostController::class, 'create'])->name('get-form-post');
         Route::post('/create', [PostController::class, 'store'])->name('store-post');
         Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post');
+        Route::post('/like/{post}', [PostController::class, 'likeSpecificPost'])->name('like-specific-post');
     });
 
 Route::prefix('/comment')
@@ -81,7 +82,7 @@ Route::prefix('/user')
         Route::get('/get-user-info', [UserController::class, 'getUserInfo'])->name('get-user-info');
         Route::get('/get-options', [UserController::class, 'getOptions'])->name('get-options');
     });
-    Route::prefix('/friend')
+Route::prefix('/friend')
     ->name('friend.')
     ->middleware('auth')
     ->group(function () {
@@ -92,6 +93,6 @@ Route::prefix('/user')
         Route::put('/handle-friend-request/{friendRequest}', [FriendController::class, 'handleFriendRequest'])->name('handle-friend-request');
     });
 
-Route::get('/auth/facebook/callback', function() {
+Route::get('/auth/facebook/callback', function () {
     return "Callback login with facebook";
 });

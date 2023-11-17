@@ -5,6 +5,7 @@ namespace App\Repositories\Eloquents;
 use App\Models\Like;
 use App\Models\User;
 use App\Repositories\Contracts\LikeRepository as ContractsLikeRepository;
+use App\Repositories\Repository;
 
 class LikeRepository extends Repository implements ContractsLikeRepository
 {
@@ -17,11 +18,10 @@ class LikeRepository extends Repository implements ContractsLikeRepository
     {
         return $this->handleSafely(function () use ($data, $user, $model) {
             $data['user_id'] = $user->id;
-            $data['emoji_type'] = $data->emoji_type;
             $like = $this->model()->fill($data);
-            $like = $model->like()->save($like);
+            $model->likes()->save($like);
 
             return $like;
-        }, 'Create friend request');
+        }, 'Like failed');
     }
 }

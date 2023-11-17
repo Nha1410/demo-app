@@ -15,8 +15,8 @@ class Like extends Model
     public const HAHA_EMOTION = 3;
     public const EMOTIONS = [
         self::LIKE_EMOTION => 'fa-solid fa-thumbs-up text-blue-500',
-        self::LOVE_EMOTION => 'fa-solid fa-heart',
-        self::HAHA_EMOTION => 'fa-solid fa-face-laugh'
+        self::LOVE_EMOTION => 'fa-solid fa-heart text-red-500',
+        self::HAHA_EMOTION => 'fa-solid fa-face-laugh text-yellow-500'
     ];
 
     /**

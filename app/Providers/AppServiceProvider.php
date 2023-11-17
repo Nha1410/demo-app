@@ -37,6 +37,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\FriendRequestRepository::class,
             \App\Repositories\Eloquents\FriendRequestRepository::class
         );
+        $this->app->singleton(
+            \App\Repositories\Contracts\LikeRepository::class,
+            \App\Repositories\Eloquents\LikeRepository::class
+        );
     }
 
     /**

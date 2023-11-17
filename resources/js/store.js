@@ -19,7 +19,6 @@ const store = createStore({
         async loadUserOptions({commit}) {
             try {
                 const response = await axios.get(route('user.get-options'));
-                console.log(response);
                 const userOptionsLoaded = response;
                 commit("setOptions", userOptionsLoaded);
             } catch (error) {

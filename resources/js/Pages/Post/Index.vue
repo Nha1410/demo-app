@@ -7,7 +7,10 @@ import InfiniteLoading from "v3-infinite-loading";
 import "v3-infinite-loading/lib/style.css";
 import CommentSection from './Components/CommentSection.vue';
 import ReactPostSection from './Components/ReactPostSection.vue';
+import { useStore } from "vuex"
+const store = useStore();
 
+store.dispatch('loadUserOptions');
 const listPost = ref([]);
 const showCommentSection = ref({});
 const comments = ref([]);
@@ -17,17 +20,15 @@ const test = {
     complete: "test",
 };
 let page = 1;
-const showDropdownEmoji = ref(true);
+const showDropdownEmoji = ref(false);
 const like = ref({
     likeCount: 10,
     loveCount: 5,
     hahaCount: 3,
 });
-let timeoutId;
 
 const load = async ($state) => {
     console.log("loading");
-
     axios
         .get("/post/get-list?page=" + page)
         .then((res) => {
@@ -68,21 +69,14 @@ const loadComments = async (postId) => {
     isLoadingComment.value = false;
 };
 const startHover = () => {
-    // showDropdownEmoji.value = false;
-    timeoutId = setTimeout(() => {
-        showDropdownEmoji.value = true;
-    }, 3000);
+    showDropdownEmoji.value = true;
 };
 
-const endHover = () => {
-    // clearTimeout(timeoutId);
-    // showDropdownEmoji.value = false;
+const endHover = (event) => {
+    event.stopPropagation();
+    showDropdownEmoji.value = false;
 };
 
-const handleEmojiClick = (emoji) => {
-    console.log(`Selected emoji: ${emoji}`);
-    // showDropdownEmoji.value = false; // Close dropdown after selection
-};
 onMounted(() => {
 
 });
@@ -109,14 +103,17 @@ onMounted(() => {
                         </div>
                         <!-- Like, Comment, Share buttons -->
                         <div class="flex items-center space-x-4 pt-4">
-                            <div class="relative" @mouseover="startHover">
+                            <div class="relative" @click="startHover()">
                                 <button
                                     class="flex items-center text-gray-400 hover:text-red-500 mr-2">
                                     <i class="fa-solid fa-heart"></i>
                                     <span class="ml-1">Like</span>
                                 </button>
                                 <ReactPostSection
+                                    :post="post"
                                     :showDropdownEmoji = "showDropdownEmoji"
+                                    :emojiIcon="store.state.userOptions"
+                                    @end-hover="endHover($event)"
                                 ></ReactPostSection>
                             </div>
                             <div class="flex items-center cursor-pointer select-none">
