@@ -35,4 +35,12 @@ class Like extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Load user info for each like
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

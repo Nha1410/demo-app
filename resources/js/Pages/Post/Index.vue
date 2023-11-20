@@ -100,9 +100,14 @@ onMounted(() => {
                         <div class="flex items-center space-x-4 pt-4">
                             <div class="relative" @click="toggleReactPostSection(post.id)">
                                 <button
-                                    class="flex items-center text-gray-400 hover:text-red-500 mr-2">
-                                    <i class="fa-solid fa-heart"></i>
-                                    <p class="ml-1 flex text-blue">{{post.total_count}}
+                                    class="flex items-center hover:text-red-500 mr-2 text-gradient">
+                                    <i class="fa-solid fa-heart"
+                                        :class="{
+                                            'text-gray-400': !post.is_liked_by_user,
+                                            'text-red-500': post.is_liked_by_user
+                                        }"
+                                    ></i>
+                                    <p class="ml-1 flex ">{{post.total_count}}
                                         <span class="ml-1">Reaction</span>
                                     </p>
                                 </button>
@@ -198,4 +203,8 @@ export default {
 .slide-fade-leave-to {
     transform: translateX(20px);
     opacity: 0;
-}</style>
+}
+.text-gradient {
+    @apply bg-gradient-to-r from-orange-500 to-pink-500 text-transparent bg-clip-text;
+}
+</style>

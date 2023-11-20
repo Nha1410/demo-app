@@ -15,6 +15,8 @@ class PostResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = $request->user();
+
         return [
             'id' => $this->resource->id,
             'title' => $this->title,
@@ -26,6 +28,7 @@ class PostResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
             'likes' => LikeResource::collection($this->whenLoaded('likes')),
             'images' => ImageResource::collection($this->whenLoaded('images')),
+            'is_liked_by_user' => $user ? $this->likes->where('user_id', $user->id)->isNotEmpty() : false,
         ];
     }
 }

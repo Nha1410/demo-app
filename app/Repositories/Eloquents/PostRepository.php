@@ -65,6 +65,7 @@ class PostRepository extends Repository implements ContractsPostRepository
         return $this->model()
             ->with('images')
             ->with('user')
+            ->with('likes.user')
             ->orderByDesc('created_at')
             ->paginate($perPage, $columns, 'page', $page)
             ->items();
