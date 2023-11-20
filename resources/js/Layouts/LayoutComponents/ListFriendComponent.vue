@@ -26,7 +26,7 @@ onMounted(() => {
         <!-- Friends -->
         <ul v-for="friend in listFriends" :key="friend.id" class="space-y-2">
             <li class="flex items-center space-x-2 mt-2">
-                <img src="/images/blank_avt.png" alt="Friend 1" class="w-8 h-8 rounded-full" />
+                <img :src="friend.profile_image" alt="Friend 1" class="w-8 h-8 rounded-full" />
                 <span class="text-gray-600">{{ friend.name }}</span>
             </li>
             <!-- Add more friend list items -->

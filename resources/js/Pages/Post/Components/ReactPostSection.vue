@@ -22,13 +22,16 @@ export default {
     setup(props, {emit}) {
         const handleEmojiClick = async(event, emojiType, postId) => {
             console.log(`Selected emoji: ${emojiType}`);
-            console.log(postId);
             try {
                 const response = await axios.post(route('post.like-specific-post', { post: postId }), {
                     'emoji_type' : emojiType,
                 });
-                console.log('Response:', response.data);
-                emit('endHover', event);
+                emit('updateReaction', {
+                    emojiType: emojiType,
+                    postId: postId,
+                    event: event,
+
+                });
             } catch (error) {
                 console.error('Error liking specific post:', error);
             }
