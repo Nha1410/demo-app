@@ -26,12 +26,7 @@ export default {
                 const response = await axios.post(route('post.like-specific-post', { post: postId }), {
                     'emoji_type' : emojiType,
                 });
-                emit('updateReaction', {
-                    emojiType: emojiType,
-                    postId: postId,
-                    event: event,
-
-                });
+                emit('updateReaction', { 'newPost' : response.data, event});
             } catch (error) {
                 console.error('Error liking specific post:', error);
             }

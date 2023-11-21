@@ -8,7 +8,7 @@ import Dropdown from "@/Components/Dropdown.vue";
                 <button type="button" class="flex cursor-pointer mr-2">
                     <i :class="contentClasses.buttonIcon"></i>
                 </button>
-                <div
+                <div v-if="isShowUnreadNotification"
                     class="absolute w-2 h-2 bg-red top-[-10%] right-[30%] rounded"
                 ></div>
             </span>
@@ -128,6 +128,10 @@ export default {
             type: Object,
             default: {},
         },
+        isShowUnreadNotification: {
+            type: Boolean,
+            default: false,
+        }
     },
 };
 </script>

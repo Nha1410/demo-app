@@ -33,6 +33,11 @@ class PostController extends Controller
         $this->imageRepository = $imageRepository;
         $this->likeRepository = $likeRepository;
     }
+    public function index()
+    {
+        return Inertia::render('Post/Index', []);
+    }
+
     /*
     ** show template for create new post
     */
@@ -66,20 +71,24 @@ class PostController extends Controller
         ], Response::HTTP_NOT_FOUND);
     }
 
-    public function index()
+    /**
+     * Find specified Post.
+     */
+    public function show(Post $post): JsonResponse | JsonResource
     {
-        return Inertia::render('Post/Index', []);
+        return new PostResource($post);
     }
 
     /**
      * @param Request $request
      * Like specific post
      */
-    public function likeSpecificPost(Request $request, Post $post)
+    public function likeSpecificPost(Request $request, Post $post): JsonResponse | JsonResource
     {
         $like = $this->likeRepository->handleLikeAction($request->all(), Auth::user(), $post);
 
-        return  $like ? response()->json($like) : response()->json([
+
+        return  $like ? response()->json(new PostResource($post->load('likes'))) : response()->json([
             'message' => __('Like failed.'),
         ], Response::HTTP_NOT_FOUND);
     }

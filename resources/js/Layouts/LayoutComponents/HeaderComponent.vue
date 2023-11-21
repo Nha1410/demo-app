@@ -10,12 +10,14 @@ const props = defineProps({
 let isUserInfoLoaded = ref(false);
 
 const listFriendRequests = ref([]);
+const isShowUnreadNotification = ref(false);
 const page = 1;
 
 const loadFriendRequests = async () => {
     await axios.get(route("friend.get-list-friend-request"))
         .then((res) => {
             listFriendRequests.value.push(...res.data);
+            // listFriendRequests.value.length > 0 ? isShowUnreadNotification.value = true : isShowUnreadNotification.value = false;
         })
         .catch((err) => {
             console.log("No friend requests");
@@ -50,6 +52,12 @@ const listenNotification = (userInfo) => {
         });
 };
 
+const watchListFriendRequests = watch(listFriendRequests, (newList) => {
+    // Follow listFriend Request status ()
+    console.log(newList.length)
+    isShowUnreadNotification.value = newList.length > 0;
+}, { deep: true });
+
 onMounted(() => {
     loadFriendRequests();
     // make sure the userInfo is loaded in DashboardComponent
@@ -77,7 +85,7 @@ onMounted(() => {
                 <div class="flex flex-row items-center w-full justify-center mt-3">
                     <div class="flex flex-row w-[70%] mb-3 pt-0">
                         <input placeholder="Search here" type="text"
-                            class=" border-transparent shadow px-3 py-2 text-sm placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200" />
+                            class="min-w-[320px] border-transparent shadow px-3 py-2 text-sm placeholder-blueGray-200 text-blueGray-700 relative bg-white rounded-md outline-none focus:ring focus:ring-lightBlue-500 focus:ring-1 focus:border-lightBlue-500 border border-solid transition duration-200" />
                         <a :href="route('friend.add-friend-template')">
                             <i class="px-3 pt-2 text-blue-700 fa-solid fa-magnifying-glass"></i>
                         </a>
@@ -86,6 +94,7 @@ onMounted(() => {
                 <NotificationDropdown
                     :isAllActive="isAllActive"
                     :listFriendRequests= "listFriendRequests"
+                    :isShowUnreadNotification = "isShowUnreadNotification"
                     @toggleAllActive="toggleAllActive"
                     @handleFriendRequest="handleFriendRequest"
                     :contentClasses="{
@@ -96,6 +105,7 @@ onMounted(() => {
                 <NotificationDropdown
                     :isAllActive="isAllActive"
                     :listFriendRequests= "listFriendRequests"
+                    :isShowUnreadNotification = "isShowUnreadNotification"
                     @toggleAllActive="toggleAllActive"
                     @handleFriendRequest="handleFriendRequest"
                     :contentClasses="{
@@ -106,6 +116,7 @@ onMounted(() => {
                 <NotificationDropdown
                     :isAllActive="isAllActive"
                     :listFriendRequests= "listFriendRequests"
+                    :isShowUnreadNotification = "isShowUnreadNotification"
                     @toggleAllActive="toggleAllActive"
                     @handleFriendRequest="handleFriendRequest"
                     :contentClasses="{

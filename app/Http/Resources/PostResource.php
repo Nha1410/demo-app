@@ -19,12 +19,13 @@ class PostResource extends JsonResource
 
         return [
             'id' => $this->resource->id,
-            'title' => $this->title,
-            'content' => $this->content,
+            'title' => $this->resource->title,
+            'content' => $this->resource->content,
             'user' => new UserResource($this->whenLoaded('user')),
             'likes' => LikeResource::collection($this->whenLoaded('likes')),
             'images' => ImageResource::collection($this->whenLoaded('images')),
             'is_liked_by_user' => $user ? $this->likes->where('user_id', $user->id)->isNotEmpty() : false,
+            'created_at' => $this->resource->created_at
         ];
     }
 }

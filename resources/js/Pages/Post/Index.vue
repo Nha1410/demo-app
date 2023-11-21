@@ -73,6 +73,11 @@ const toggleReactPostSection = (postId) => {
 
 const updateReaction = (payload) => {
     payload.event.stopPropagation();
+    const postIndex = listPost.value.findIndex(post => post.id === payload.newPost.id);
+    if (postIndex !== -1) {
+            listPost.value[postIndex].likes = payload.newPost.likes;
+            listPost.value[postIndex].is_liked_by_user = payload.newPost.is_liked_by_user;
+        }
     showCommentSection.value[payload.postId] = false;
 };
 
@@ -104,12 +109,27 @@ onMounted(() => {
                     <div
                         v-for="post in listPost"
                         :key="post.id"
-                        class="bg-white rounded shadow p-6 mb-4 flex flex-col"
+                        class="bg-white rounded shadow p-3 mb-4 flex flex-col"
                     >
-                        <h1 class="text-xl font-semibold mb-2">
+                        <div class="flex mb-2 items-center">
+                            <img :src="post.user.profile_image"  class="w-8 h-8 rounded-full">
+                            <div class="flex flex-col">
+                                <span class="font-bold ml-2">{{ post.user.name }}</span>
+                                <timeago class="ml-2 font-light text-[13px]" :datetime="post.created_at"/>
+                            </div>
+                            <div class="ml-auto mr-4 space-x-4 text-gray-600">
+                                <button class="hover:text-gray-400">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <button class="hover:text-gray-400">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h1 class="text-xl font-semibold">
                             {{ post.title }}
                         </h1>
-                        <p class="text-gray-600">
+                        <p class="text-gray-600 mb-1">
                             {{ post.content }}
                         </p>
                         <div

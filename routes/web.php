@@ -60,7 +60,7 @@ Route::prefix('/post')
         Route::get('/get-list', [PostController::class, 'getList'])->name('get-list-post');
         Route::get('/create', [PostController::class, 'create'])->name('get-form-post');
         Route::post('/create', [PostController::class, 'store'])->name('store-post');
-        Route::get('/{post_id}', [PostController::class, 'getSpecificPost'])->name('get-specific-post');
+        Route::get('/{post_id}', [PostController::class, 'show'])->name('show');
         Route::post('/like/{post}', [PostController::class, 'likeSpecificPost'])->name('like-specific-post');
     });
 

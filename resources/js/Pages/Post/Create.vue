@@ -56,11 +56,11 @@ import { Head } from "@inertiajs/vue3";
                                     <div class="relative">
                                         <img
                                         v-if="!imagePreview"
-                                        class="h-auto max-w-lg rounded-lg"
+                                        class="h-auto w-auto rounded-lg"
                                         src="/images/image-1@2.jpg"
                                         alt="image description"
                                         />
-                                        <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="max-h-[300px] h-auto max-w-lg rounded-lg">
+                                        <img v-if="imagePreview" :src="imagePreview" alt="Image Preview" class="max-h-[300px] h-auto w-auto rounded-lg">
                                         <v-btn
                                             v-if="imagePreview"
                                             color="primary"
