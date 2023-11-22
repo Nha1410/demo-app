@@ -41,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\LikeRepository::class,
             \App\Repositories\Eloquents\LikeRepository::class
         );
+        $this->app->singleton(
+            \App\Repositories\Contracts\NotificationRepository::class,
+            \App\Repositories\Eloquents\NotificationRepository::class
+        );
     }
 
     /**

@@ -54,26 +54,33 @@ import Dropdown from "@/Components/Dropdown.vue";
                         class="py-2"
                     >
                         <li
-                            v-for="(notification, index) in listNotifications"
-                            :key="notification.id"
+                            v-for="(friendRequest, index) in listFriendRequests"
+                            :key="friendRequest.id"
                             class="bg-gray-100 rounded-lg p-2 mb-2"
                         >
                             <div
-                                v-if="notification"
+                                v-if="friendRequest"
                                 class="flex flex-row gap-x-2 items-center"
                             >
                                 <div class="w-10 rounded-full overflow-hidden">
-                                    <i class="fa-solid fa-comment"></i>
+                                    <img
+                                        :src="
+                                            friendRequest.sender.profile_image
+                                        "
+                                    />
                                 </div>
                                 <p>
-                                    {{ notification.content }}
+                                    You have a friend request from
+                                    <span class="font-bold">{{
+                                        friendRequest.sender.name
+                                    }}</span>
                                 </p>
                                 <div class="">
                                     <button
                                         @click="
                                             $emit('handleFriendRequest', {
-                                                notificationId:
-                                                    notification.id,
+                                                friendRequestId:
+                                                    friendRequest.id,
                                                 accept: true,
                                                 index: index,
                                             })
@@ -81,13 +88,13 @@ import Dropdown from "@/Components/Dropdown.vue";
                                         class="text-green-500 px-2 py-1 rounded-md"
                                     >
                                         <i class="fa-solid fa-check"></i>
-                                        Mark as read
+                                        Accept
                                     </button>
                                     <button
                                         @click="
                                             $emit('handleFriendRequest', {
-                                                notificationId:
-                                                    notification.id,
+                                                friendRequestId:
+                                                    friendRequest.id,
                                                 accept: false,
                                                 index: index,
                                             })
@@ -95,7 +102,7 @@ import Dropdown from "@/Components/Dropdown.vue";
                                         class="text-red-500 px-2 py-1 rounded-md"
                                     >
                                         <i class="fa-solid fa-xmark"></i>
-                                        Remove
+                                        Decline
                                     </button>
                                 </div>
                             </div>
@@ -113,7 +120,7 @@ export default {
             type: Boolean,
             default: false,
         },
-        listNotifications: {
+        listFriendRequests: {
             type: Array,
             default: [],
         },

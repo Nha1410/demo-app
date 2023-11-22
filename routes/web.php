@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FriendController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -91,6 +92,14 @@ Route::prefix('/friend')
         Route::post('/send-friend-request', [FriendController::class, 'createFriendRequest'])->name('send-friend-request');
         Route::get('/get-list-friend-request', [FriendController::class, 'getListFriendRequest'])->name('get-list-friend-request');
         Route::put('/handle-friend-request/{friendRequest}', [FriendController::class, 'handleFriendRequest'])->name('handle-friend-request');
+    });
+
+Route::prefix('notification')
+    ->name('notification.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/get-list-notification', [ NotificationController::class, 'getListByUserId'])->name('get-list-by-user-id');
+        Route::post('/store', [ NotificationController::class, 'store'])->name('store');
     });
 
 Route::get('/auth/facebook/callback', function () {

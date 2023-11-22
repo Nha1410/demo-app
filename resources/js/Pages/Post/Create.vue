@@ -5,7 +5,7 @@ import { Head } from "@inertiajs/vue3";
 
 </script>
 <template>
-    <Head title="Dashboard" />
+    <Head title="Edit-Avatar" />
 
     <DashboardLayout>
         <div class="col-span-9 mt-4">

@@ -2,6 +2,7 @@
 import Dropdown from "@/Components/Dropdown.vue";
 import axios from "axios";
 import { ref, watch, onMounted } from "vue";
+import FriendRequestDropdown from "./HeaderComponents/FriendRequestDropdown.vue"
 import NotificationDropdown from "./HeaderComponents/NotificationDropdown.vue"
 
 const props = defineProps({
@@ -12,12 +13,12 @@ let isUserInfoLoaded = ref(false);
 const listFriendRequests = ref([]);
 const isShowUnreadNotification = ref(false);
 const page = 1;
+const listNotifications = ref([]);
 
 const loadFriendRequests = async () => {
     await axios.get(route("friend.get-list-friend-request"))
         .then((res) => {
             listFriendRequests.value.push(...res.data);
-            // listFriendRequests.value.length > 0 ? isShowUnreadNotification.value = true : isShowUnreadNotification.value = false;
         })
         .catch((err) => {
             console.log("No friend requests");
@@ -36,8 +37,20 @@ const handleFriendRequest = async (payload) => {
             }
         })
         .catch((error) => {
-            console.log("No friend requests");
+            console.log("hanlde friend requests failed");
             // should add toast message
+        });
+};
+
+const loadNotifications = async () => {
+    await axios.get(route("notification.get-list-by-user-id"))
+        .then((res) => {
+            if (res.status == 200) {
+                listNotifications.value.push(...res.data);
+            }
+        })
+        .catch((error) => {
+            console.log("No notification found");
         });
 };
 
@@ -53,13 +66,13 @@ const listenNotification = (userInfo) => {
 };
 
 const watchListFriendRequests = watch(listFriendRequests, (newList) => {
-    // Follow listFriend Request status ()
-    console.log(newList.length)
+    // watch number of listFriend Request
     isShowUnreadNotification.value = newList.length > 0;
 }, { deep: true });
 
 onMounted(() => {
     loadFriendRequests();
+    loadNotifications();
     // make sure the userInfo is loaded in DashboardComponent
     watch(() => props.userInfo, (newUserInfo) => {
         if (newUserInfo) {
@@ -91,7 +104,7 @@ onMounted(() => {
                         </a>
                     </div>
                 </div>
-                <NotificationDropdown
+                <FriendRequestDropdown
                     :isAllActive="isAllActive"
                     :listFriendRequests= "listFriendRequests"
                     :isShowUnreadNotification = "isShowUnreadNotification"
@@ -101,8 +114,8 @@ onMounted(() => {
                         'buttonIcon' : 'px-4 text-gray-600 text-[18px] fa-solid fa-user-group'
                     }"
                 >
-                </NotificationDropdown>
-                <NotificationDropdown
+                </FriendRequestDropdown>
+                <FriendRequestDropdown
                     :isAllActive="isAllActive"
                     :listFriendRequests= "listFriendRequests"
                     :isShowUnreadNotification = "isShowUnreadNotification"
@@ -112,10 +125,10 @@ onMounted(() => {
                         'buttonIcon' : 'px-4 text-gray-600 text-[18px] fa-solid fa-message'
                     }"
                 >
-                </NotificationDropdown>
+                </FriendRequestDropdown>
                 <NotificationDropdown
                     :isAllActive="isAllActive"
-                    :listFriendRequests= "listFriendRequests"
+                    :listNotifications= "listNotifications"
                     :isShowUnreadNotification = "isShowUnreadNotification"
                     @toggleAllActive="toggleAllActive"
                     @handleFriendRequest="handleFriendRequest"

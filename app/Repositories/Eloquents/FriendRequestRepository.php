@@ -51,6 +51,7 @@ class FriendRequestRepository extends Repository implements ContractsFriendReque
             ->where('status', '=' ,FriendRequest::SENDING_STATUS)
             ->pluck('sender_id')
             ->toArray();
+
         return parent::getList($this->model()->with('sender')->whereIn('sender_id', $senderRequestIds), $data);
     }
 

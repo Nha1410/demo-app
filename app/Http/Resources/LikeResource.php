@@ -22,12 +22,4 @@ class LikeResource extends JsonResource
             'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
-
-    /**
-     * Load user info for each like
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }
