@@ -65,9 +65,7 @@ import Dropdown from "@/Components/Dropdown.vue";
                                 <div class="w-10 rounded-full overflow-hidden">
                                     <i class="fa-solid fa-comment"></i>
                                 </div>
-                                <p>
-                                    {{ notification.content }}
-                                </p>
+                                <p v-html="notification.content"></p>
                                 <div class="">
                                     <button
                                         @click="

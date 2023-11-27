@@ -17,14 +17,19 @@ export default {
         post: {
             type: Object,
             default: {}
+        },
+        notificationTypes: {
+            type: Object,
+            default: [],
         }
     },
     setup(props, {emit}) {
-        const handleEmojiClick = async(event, emojiType, postId) => {
+        const handleEmojiClick = async(event, emojiType, postId, notificationTypeAction) => {
             console.log(`Selected emoji: ${emojiType}`);
             try {
                 const response = await axios.post(route('post.like-specific-post', { post: postId }), {
                     'emoji_type' : emojiType,
+                    'notification_type_id' : notificationTypeAction,
                 });
                 emit('updateReaction', { 'newPost' : response.data, event});
             } catch (error) {
@@ -44,7 +49,7 @@ export default {
         <button
             v-for="icon in emojiIcon"
             :key="icon.value"
-            @click="handleEmojiClick($event, icon.value, post.id)"
+            @click="handleEmojiClick($event, icon.value, post.id, notificationTypes.like_post)"
             class="rounded px-2 py-1 focus:outline-none hover:scale-125 hover:text-blue-700"
             >
             <i :class="icon.label"></i>

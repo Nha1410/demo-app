@@ -92,4 +92,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Notification::class, 'recipient_id');
     }
+
+    public function notificationActor()
+    {
+        return $this->belongsTo(NotificationActor::class);
+    }
 }

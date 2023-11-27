@@ -54,11 +54,13 @@ class UserController extends Controller
 
     /**
      * Get a list of users as select box options.
+     * And load config files for user actions
      */
     public function getOptions(): JsonResponse
     {
         $options = $this->userRepository->getOptions();
+        $config = $this->userRepository->loadConfig();
 
-        return response()->json($options);
+        return response()->json(array_merge($options, $config));
     }
 }

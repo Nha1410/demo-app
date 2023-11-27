@@ -6,6 +6,7 @@ use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repositories\Contracts\ImageRepository;
 use App\Repositories\Contracts\LikeRepository;
+use App\Repositories\Contracts\NotificationRepository;
 use App\Repositories\Contracts\PostRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,16 +23,19 @@ class PostController extends Controller
     protected $postRepository;
     protected $imageRepository;
     protected $likeRepository;
+    protected $notificationRepository;
 
 
     public function __construct(
         PostRepository $postRepository,
         ImageRepository $imageRepository,
         LikeRepository $likeRepository,
+        NotificationRepository $notificationRepository
     ) {
         $this->postRepository = $postRepository;
         $this->imageRepository = $imageRepository;
         $this->likeRepository = $likeRepository;
+        $this->notificationRepository = $notificationRepository;
     }
     public function index()
     {
@@ -87,8 +91,11 @@ class PostController extends Controller
     {
         $like = $this->likeRepository->handleLikeAction($request->all(), Auth::user(), $post);
 
+        if ($like) {
+            $notification = $this->notificationRepository->storeNewNotification($request->all(), Auth::user(), $post);
+        }
 
-        return  $like ? response()->json(new PostResource($post->load('likes'))) : response()->json([
+        return  $like && $notification ? response()->json(new PostResource($post->load('likes'))) : response()->json([
             'message' => __('Like failed.'),
         ], Response::HTTP_NOT_FOUND);
     }

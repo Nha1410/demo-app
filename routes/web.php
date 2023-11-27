@@ -99,7 +99,7 @@ Route::prefix('notification')
     ->middleware('auth')
     ->group(function () {
         Route::get('/get-list-notification', [ NotificationController::class, 'getListByUserId'])->name('get-list-by-user-id');
-        Route::post('/store', [ NotificationController::class, 'store'])->name('store');
+        Route::get('/{notification}', [ NotificationController::class, 'show'])->name('show');
     });
 
 Route::get('/auth/facebook/callback', function () {

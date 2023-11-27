@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             AdminSeeder::class,
+            NotificationTypeSeeder::class,
         ]);
         \App\Models\User::factory(30)->create();
 

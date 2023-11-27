@@ -89,6 +89,16 @@ class UserRepository extends Repository implements ContractsUserRepository
             ->map(fn ($label, $value) => compact('value', 'label'))
             ->values();
 
-        return $reactionOptions->toArray();
+        return ['reaction_options' => $reactionOptions];
+    }
+
+    /**
+     * Load config for user
+     */
+    public function loadConfig(): array
+    {
+        $notificationTypes = config('const');
+
+        return $notificationTypes;
     }
 }

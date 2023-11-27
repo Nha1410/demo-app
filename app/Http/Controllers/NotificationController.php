@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\NotificationResource;
+use App\Models\Notification;
 use App\Repositories\Contracts\NotificationRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -39,4 +40,8 @@ class NotificationController extends Controller
         ], Response::HTTP_NOT_FOUND);
     }
 
+    public function show(Notification $notification): JsonResource
+    {
+        return (new NotificationResource($notification));
+    }
 }

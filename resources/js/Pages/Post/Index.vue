@@ -171,14 +171,15 @@ onMounted(() => {
                                     :showDropdownEmoji="
                                         showDropdownEmoji[post.id]
                                     "
-                                    :emojiIcon="store.state.userOptions"
+                                    :emojiIcon="store.state.userOptions.reaction_options"
+                                    :notificationTypes="store.state.userOptions.notification_types"
                                     @updateReaction="updateReaction($event)"
                                 ></ReactPostSection>
                             </div>
                             <div
                                 class="flex items-center cursor-pointer select-none"
                             >
-                                <button v-for="icon in userOptions"
+                                <button v-for="icon in userOptions.reaction_options"
                                     class="flex items-center text-blue-500 rounded px-1 py-1 focus:outline-none hover:bg-blue-100 transition-colors duration-200"
                                 >
                                     <i v-if="countedLikes(post.likes).value[icon.value] > 0"
